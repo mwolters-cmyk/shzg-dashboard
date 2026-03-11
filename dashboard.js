@@ -426,6 +426,7 @@ function renderDashboard() {
     renderPersoneel();
     renderInspectie();
     renderBenchmark();
+    renderKaart();
 }
 
 // ===================== SECTION 1: SCHOOLPROFIEL =====================
@@ -1483,4 +1484,156 @@ function renderVAStrips(currentVA) {
     });
 
     renderDistributionStrips('benchmark-strips', items);
+}
+
+// ===================== SECTION 10: SCHOLENKAART =====================
+
+let mapInstance = null;
+let mapMarkers = [];
+let mapLabels = [];
+let coordsCache = null;
+
+async function loadCoordinates() {
+    if (coordsCache) return coordsCache;
+    try {
+        const resp = await fetch(DATA_BASE + 'coordinates.json');
+        coordsCache = await resp.json();
+    } catch (e) {
+        coordsCache = {};
+    }
+    return coordsCache;
+}
+
+async function renderKaart() {
+    const coords = await loadCoordinates();
+    if (!coords || Object.keys(coords).length === 0) return;
+
+    const container = document.getElementById('map-container');
+    if (!container) return;
+
+    // Initialize map only once
+    if (!mapInstance) {
+        mapInstance = L.map('map-container', {
+            scrollWheelZoom: true,
+            zoomControl: true,
+        }).setView([52.2, 5.3], 7);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap',
+            maxZoom: 18,
+        }).addTo(mapInstance);
+
+        // Show/hide labels based on zoom level
+        mapInstance.on('zoomend', updateMapLabels);
+
+        // Zoom button
+        const btn = document.getElementById('map-zoom-btn');
+        if (btn) {
+            btn.addEventListener('click', () => {
+                const c = coords[selectedSchool];
+                if (c) mapInstance.flyTo([c.lat, c.lng], 13, { duration: 0.8 });
+            });
+        }
+    }
+
+    // Clear existing markers & labels
+    mapMarkers.forEach(m => mapInstance.removeLayer(m));
+    mapLabels.forEach(l => mapInstance.removeLayer(l));
+    mapMarkers = [];
+    mapLabels = [];
+
+    const latestYear = SCHOOL_YEARS[SCHOOL_YEARS.length - 1];
+
+    // Add markers for all schools
+    schoolList.forEach(s => {
+        const c = coords[s.tSchool];
+        if (!c) return;
+
+        const isSelected = s.tSchool === selectedSchool;
+        const row = getPanelRow(s.tSchool, latestYear);
+
+        // Build popup content
+        let popupHtml = `<div style="min-width:180px">
+            <strong style="font-size:13px">${s.name}</strong><br>
+            <span style="color:#666;font-size:11px">${s.city}</span><br>
+            <span style="color:#888;font-size:11px">${s.address}, ${s.postcode}</span>`;
+
+        if (row) {
+            const ll = num(row.leerlingen_totaal);
+            const ce = num(row.ce_gem);
+            const sp = num(row.slaagpct);
+            popupHtml += `<hr style="margin:6px 0;border:none;border-top:1px solid #eee">`;
+            if (ll !== null) popupHtml += `<span style="font-size:12px">Leerlingen: <b>${Math.round(ll)}</b></span><br>`;
+            if (ce !== null) popupHtml += `<span style="font-size:12px">CE gemiddeld: <b>${ce.toFixed(2)}</b></span><br>`;
+            if (sp !== null) popupHtml += `<span style="font-size:12px">Slagings%: <b>${sp.toFixed(1)}%</b></span><br>`;
+        }
+        popupHtml += `</div>`;
+
+        // Circle marker
+        const marker = L.circleMarker([c.lat, c.lng], {
+            radius: isSelected ? 10 : 6,
+            fillColor: isSelected ? '#e67e22' : '#1a5276',
+            color: isSelected ? '#d35400' : '#0e3a5c',
+            weight: isSelected ? 3 : 1.5,
+            fillOpacity: isSelected ? 0.95 : 0.8,
+            zIndexOffset: isSelected ? 1000 : 0,
+        }).addTo(mapInstance);
+
+        marker.bindPopup(popupHtml);
+        marker.bindTooltip(s.name, {
+            direction: 'top',
+            offset: [0, -8],
+            className: 'map-label',
+        });
+
+        // Click on marker → select that school
+        marker.on('click', () => {
+            const sel = document.getElementById('school-select');
+            if (sel) {
+                sel.value = s.tSchool;
+                sel.dispatchEvent(new Event('change'));
+            }
+        });
+
+        marker._tSchool = s.tSchool;
+        marker._isSelected = isSelected;
+        mapMarkers.push(marker);
+
+        // Permanent label (only shown at certain zoom levels)
+        const labelClass = isSelected ? 'map-label-selected' : 'map-label';
+        const label = L.tooltip({
+            permanent: true,
+            direction: 'right',
+            offset: [isSelected ? 14 : 10, 0],
+            className: labelClass,
+        });
+        label.setContent(s.name);
+        label.setLatLng([c.lat, c.lng]);
+        label._tSchool = s.tSchool;
+        label._isSelected = isSelected;
+        mapLabels.push(label);
+    });
+
+    updateMapLabels();
+
+    // Ensure map renders correctly (fix for container resize)
+    setTimeout(() => { if (mapInstance) mapInstance.invalidateSize(); }, 200);
+}
+
+function updateMapLabels() {
+    if (!mapInstance) return;
+    const zoom = mapInstance.getZoom();
+
+    mapLabels.forEach(label => {
+        if (label._isSelected) {
+            // Selected school label: always visible
+            if (!mapInstance.hasLayer(label)) label.addTo(mapInstance);
+        } else if (zoom >= 10) {
+            // Other labels: only at zoom >= 10
+            if (!mapInstance.hasLayer(label)) label.addTo(mapInstance);
+        } else {
+            // Hide labels at low zoom
+            if (mapInstance.hasLayer(label)) mapInstance.removeLayer(label);
+        }
+    });
 }

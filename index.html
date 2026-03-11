@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="compare.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <link rel="stylesheet" href="auth.css">
     <script src="auth.js"></script>
 </head>
@@ -49,6 +51,7 @@
             <a href="#personeel" data-section="personeel">Personeel</a>
             <a href="#inspectie" data-section="inspectie">Inspectie</a>
             <a href="#benchmark" data-section="benchmark">Benchmark</a>
+            <a href="#kaart" data-section="kaart">Kaart</a>
         </nav>
 
         <!-- Main content -->
@@ -220,6 +223,15 @@
                 <div class="chart-card">
                     <h3>Positie binnen SHZG</h3>
                     <div id="benchmark-strips"></div>
+                </div>
+            </section>
+
+            <!-- Section 10: Scholenkaart -->
+            <section id="kaart" class="dashboard-section">
+                <h2>Scholenkaart</h2>
+                <div class="chart-card">
+                    <div id="map-container"></div>
+                    <button id="map-zoom-btn" class="map-zoom-btn">Zoom naar geselecteerde school</button>
                 </div>
             </section>
 
