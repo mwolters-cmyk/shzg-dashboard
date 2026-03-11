@@ -824,8 +824,117 @@ footer {
     font-style: italic;
 }
 
+/* === "Alle scholen" toggle — green accent === */
+.map-zoom-btn.active-alt {
+    background: #27ae60;
+}
+
+.map-zoom-btn.active-alt:hover {
+    background: #1e8449;
+}
+
+/* === Alle scholen legend === */
+.map-allschools-legend {
+    margin-top: 0.75rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 0.9rem;
+    font-size: 0.75rem;
+    max-height: 160px;
+    overflow-y: auto;
+}
+
+.map-allschools-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    white-space: nowrap;
+}
+
+.map-allschools-legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    border: 1px solid rgba(0,0,0,0.15);
+}
+
+/* === Breakdown popup (Leaflet popup) === */
+.map-popup-breakdown {
+    min-width: 200px;
+    max-width: 320px;
+}
+
+.map-popup-breakdown .popup-title {
+    font-weight: 700;
+    font-size: 13px;
+    margin-bottom: 6px;
+    color: var(--primary);
+}
+
+.map-popup-breakdown table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11.5px;
+}
+
+.map-popup-breakdown td {
+    padding: 2px 4px;
+    vertical-align: middle;
+}
+
+.map-popup-breakdown .popup-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    display: inline-block;
+    border: 1px solid rgba(0,0,0,0.15);
+}
+
+.map-popup-breakdown .popup-school {
+    max-width: 170px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.map-popup-breakdown .popup-school.dominant {
+    font-weight: 700;
+}
+
+.map-popup-breakdown .popup-count {
+    text-align: right;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+.map-popup-breakdown .popup-pct {
+    text-align: right;
+    color: var(--text-light);
+    font-variant-numeric: tabular-nums;
+}
+
+/* === School logo markers === */
+.school-logo-icon {
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    background: white;
+    object-fit: cover;
+}
+
+.school-logo-icon.logo-selected {
+    border: 3px solid #e67e22;
+    box-shadow: 0 0 0 2px rgba(230, 126, 34, 0.4), 0 2px 6px rgba(0,0,0,0.3);
+}
+
 @media (max-width: 768px) {
     #map-container {
         height: 400px;
+    }
+
+    .map-allschools-legend {
+        max-height: 100px;
+        font-size: 0.7rem;
     }
 }

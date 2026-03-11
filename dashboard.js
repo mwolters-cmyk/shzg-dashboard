@@ -1497,6 +1497,12 @@ let pc4Cache = null;
 let choroplethLayer = null;
 let heatmapVisible = false;
 
+// "Alle scholen" (KNVB-style) state
+let dominantCache = null;
+let allSchoolsVisible = false;
+let allSchoolsLayer = null;
+let logoMarkerLayer = null;
+
 async function loadCoordinates() {
     if (coordsCache) return coordsCache;
     try {
@@ -1543,6 +1549,12 @@ async function renderKaart() {
         const heatBtn = document.getElementById('map-heatmap-btn');
         if (heatBtn) {
             heatBtn.addEventListener('click', () => toggleHeatmap());
+        }
+
+        // "Alle scholen" toggle button
+        const allBtn = document.getElementById('map-allschools-btn');
+        if (allBtn) {
+            allBtn.addEventListener('click', () => toggleAllSchools());
         }
     }
 
@@ -1631,6 +1643,13 @@ async function renderKaart() {
         updateChoropleth();
     }
 
+    // In "Alle scholen" mode, hide circle markers and show logos instead
+    if (allSchoolsVisible) {
+        mapMarkers.forEach(m => { m.setStyle({ opacity: 0, fillOpacity: 0 }); });
+        mapLabels.forEach(l => { if (mapInstance.hasLayer(l)) mapInstance.removeLayer(l); });
+        updateLogoMarkers();
+    }
+
     // Ensure map renders correctly (fix for container resize)
     setTimeout(() => { if (mapInstance) mapInstance.invalidateSize(); }, 200);
 }
@@ -1705,6 +1724,11 @@ async function toggleHeatmap() {
             mapInstance.removeLayer(choroplethLayer);
         }
         return;
+    }
+
+    // Turn off "Alle scholen" first if active
+    if (allSchoolsVisible) {
+        await toggleAllSchools(); // turns it off
     }
 
     // Turn on — lazy-load data
@@ -1813,11 +1837,291 @@ function highlightPC4(e) {
 function resetPC4(e) {
     const layer = e.target;
     const pc4 = String(layer.feature.properties.postcode);
-    const schoolData = herkomstCache ? (herkomstCache[selectedSchool] || {}) : {};
-    const count = schoolData[pc4] || 0;
-    layer.setStyle({
-        color: count > 0 ? '#b87333' : '#c0c0c0',
-        weight: count > 0 ? 0.8 : 0.3,
-        opacity: count > 0 ? 0.6 : 0.2,
-    });
+    if (heatmapVisible) {
+        const schoolData = herkomstCache ? (herkomstCache[selectedSchool] || {}) : {};
+        const count = schoolData[pc4] || 0;
+        layer.setStyle({
+            color: count > 0 ? '#b87333' : '#c0c0c0',
+            weight: count > 0 ? 0.8 : 0.3,
+            opacity: count > 0 ? 0.6 : 0.2,
+        });
+    } else if (allSchoolsVisible && dominantCache) {
+        const info = dominantCache.pc4[pc4];
+        if (info) {
+            layer.setStyle({
+                weight: 0.8,
+                color: '#666',
+                opacity: 0.4,
+            });
+        }
+    }
 }
+
+/* ===== "Alle scholen" KNVB-style choropleth ===== */
+
+async function loadDominant() {
+    if (dominantCache) return dominantCache;
+    try {
+        const resp = await fetch(DATA_BASE + 'dominant.json');
+        dominantCache = await resp.json();
+    } catch (e) {
+        dominantCache = null;
+    }
+    return dominantCache;
+}
+
+async function toggleAllSchools() {
+    const btn = document.getElementById('map-allschools-btn');
+    const heatLegend = document.getElementById('map-legend');
+    const heatNote = document.getElementById('map-source-note');
+    const allLegend = document.getElementById('map-allschools-legend');
+
+    if (allSchoolsVisible) {
+        // Turn off
+        allSchoolsVisible = false;
+        if (btn) { btn.textContent = 'Alle scholen'; btn.classList.remove('active-alt'); }
+        if (allLegend) allLegend.style.display = 'none';
+        if (heatNote) heatNote.style.display = 'none';
+
+        // Remove all-schools layer
+        if (allSchoolsLayer && mapInstance) {
+            mapInstance.removeLayer(allSchoolsLayer);
+        }
+
+        // Remove logo markers
+        if (logoMarkerLayer && mapInstance) {
+            mapInstance.removeLayer(logoMarkerLayer);
+        }
+
+        // Restore circle markers
+        mapMarkers.forEach(m => {
+            m.setStyle({
+                opacity: 1,
+                fillOpacity: m._isSelected ? 0.95 : 0.8,
+            });
+        });
+        updateMapLabels();
+        return;
+    }
+
+    // Turn off heatmap first if active
+    if (heatmapVisible) {
+        await toggleHeatmap(); // turns it off
+    }
+
+    // Show loading state
+    if (btn) { btn.textContent = 'Laden...'; btn.disabled = true; }
+
+    // Lazy-load data
+    const [dominant, topo] = await Promise.all([loadDominant(), loadPC4Boundaries()]);
+
+    if (!dominant || !topo) {
+        if (btn) { btn.textContent = 'Alle scholen'; btn.disabled = false; }
+        return;
+    }
+
+    allSchoolsVisible = true;
+    if (btn) { btn.textContent = 'Verberg alle scholen'; btn.disabled = false; btn.classList.add('active-alt'); }
+    if (heatNote) { heatNote.textContent = 'Herkomstgegevens: actuele stand (bron: Scholen op de Kaart). Waarden <5 zijn geschat.'; heatNote.style.display = 'block'; }
+
+    // Build "alle scholen" layer (once)
+    if (!allSchoolsLayer) {
+        const objectKey = Object.keys(topo.objects)[0];
+        const geojson = topojson.feature(topo, topo.objects[objectKey]);
+
+        allSchoolsLayer = L.geoJson(geojson, {
+            style: (feature) => {
+                const pc4 = String(feature.properties.postcode);
+                const info = dominant.pc4[pc4];
+                if (!info) return { fillOpacity: 0, weight: 0.3, color: '#ccc', opacity: 0.2 };
+                const colorIdx = dominant.colors[info.dominant];
+                const color = dominant.palette[colorIdx !== undefined ? colorIdx : 0];
+                return {
+                    fillColor: color,
+                    fillOpacity: 0.6,
+                    color: '#666',
+                    weight: 0.8,
+                    opacity: 0.4,
+                };
+            },
+            onEachFeature: (feature, layer) => {
+                const pc4 = String(feature.properties.postcode);
+                const info = dominant.pc4[pc4];
+                if (info) {
+                    layer.on({
+                        mouseover: (e) => {
+                            e.target.setStyle({ weight: 2.5, color: '#333', opacity: 0.8 });
+                            e.target.bringToFront();
+                            if (logoMarkerLayer) logoMarkerLayer.eachLayer(m => m.bringToFront());
+                        },
+                        mouseout: resetPC4,
+                        click: (e) => {
+                            showBreakdownPopup(pc4, e.latlng, dominant);
+                        },
+                    });
+                }
+            },
+        });
+    } else {
+        // Re-style in case we need to refresh
+        allSchoolsLayer.eachLayer(layer => {
+            const pc4 = String(layer.feature.properties.postcode);
+            const info = dominant.pc4[pc4];
+            if (!info) return;
+            const colorIdx = dominant.colors[info.dominant];
+            const color = dominant.palette[colorIdx !== undefined ? colorIdx : 0];
+            layer.setStyle({
+                fillColor: color,
+                fillOpacity: 0.6,
+                color: '#666',
+                weight: 0.8,
+                opacity: 0.4,
+            });
+        });
+    }
+
+    allSchoolsLayer.addTo(mapInstance);
+    allSchoolsLayer.bringToBack();
+
+    // Hide circle markers, show logo markers
+    mapMarkers.forEach(m => { m.setStyle({ opacity: 0, fillOpacity: 0 }); });
+    mapLabels.forEach(l => { if (mapInstance.hasLayer(l)) mapInstance.removeLayer(l); });
+
+    await addLogoMarkers(dominant);
+
+    // Build legend
+    buildAllSchoolsLegend(dominant);
+
+    if (heatLegend) heatLegend.style.display = 'none';
+    if (allLegend) allLegend.style.display = 'flex';
+}
+
+function showBreakdownPopup(pc4, latlng, dominant) {
+    const info = dominant.pc4[pc4];
+    if (!info || !info.schools || info.schools.length === 0) return;
+
+    let html = '<div class="map-popup-breakdown">';
+    html += `<div class="popup-title">PC4 ${pc4}</div>`;
+    html += '<table>';
+
+    info.schools.forEach(s => {
+        const colorIdx = dominant.colors[s.tSchool];
+        const color = dominant.palette[colorIdx !== undefined ? colorIdx : 0];
+        const name = dominant.schoolNames[s.tSchool] || s.tSchool;
+        const isDominant = s.tSchool === info.dominant;
+        const approx = s.count === 2 ? '~' : '';
+
+        html += '<tr>';
+        html += `<td><span class="popup-dot" style="background:${color}"></span></td>`;
+        html += `<td class="popup-school${isDominant ? ' dominant' : ''}">${name}</td>`;
+        html += `<td class="popup-count">${approx}${s.count}</td>`;
+        html += `<td class="popup-pct">${s.pct}%</td>`;
+        html += '</tr>';
+    });
+
+    html += '</table></div>';
+
+    L.popup({ maxWidth: 350, className: 'breakdown-popup' })
+        .setLatLng(latlng)
+        .setContent(html)
+        .openOn(mapInstance);
+}
+
+async function addLogoMarkers(dominant) {
+    if (!mapInstance || !coordsCache) return;
+
+    // Create a separate pane for logos so they stay on top
+    if (!mapInstance.getPane('logoPane')) {
+        mapInstance.createPane('logoPane');
+        mapInstance.getPane('logoPane').style.zIndex = 650;
+    }
+
+    if (logoMarkerLayer) {
+        mapInstance.removeLayer(logoMarkerLayer);
+    }
+
+    logoMarkerLayer = L.layerGroup([], { pane: 'logoPane' });
+
+    schoolList.forEach(s => {
+        const c = coordsCache[s.tSchool];
+        if (!c) return;
+
+        const prefix = s.tSchool.split('.')[0].trim();
+        const isSelected = s.tSchool === selectedSchool;
+        const colorIdx = dominant.colors[s.tSchool];
+        const color = dominant.palette[colorIdx !== undefined ? colorIdx : 0];
+
+        const iconSize = isSelected ? 36 : 28;
+        const icon = L.divIcon({
+            className: 'school-logo-wrapper',
+            html: `<img src="data/logos/${prefix}.png"
+                        class="school-logo-icon${isSelected ? ' logo-selected' : ''}"
+                        style="width:${iconSize}px;height:${iconSize}px;${!isSelected ? 'border-color:' + color : ''}"
+                        onerror="this.style.display='none'"
+                        alt="${s.name}">`,
+            iconSize: [iconSize, iconSize],
+            iconAnchor: [iconSize / 2, iconSize / 2],
+        });
+
+        const marker = L.marker([c.lat, c.lng], {
+            icon: icon,
+            pane: 'logoPane',
+            zIndexOffset: isSelected ? 1000 : 0,
+        });
+
+        marker.bindTooltip(s.name, {
+            direction: 'top',
+            offset: [0, -(iconSize / 2 + 4)],
+            className: isSelected ? 'map-label-selected' : 'map-label',
+        });
+
+        // Click on logo → select that school
+        marker.on('click', () => {
+            const sel = document.getElementById('school-select');
+            if (sel) {
+                sel.value = s.tSchool;
+                sel.dispatchEvent(new Event('change'));
+            }
+        });
+
+        logoMarkerLayer.addLayer(marker);
+    });
+
+    logoMarkerLayer.addTo(mapInstance);
+}
+
+function updateLogoMarkers() {
+    if (!logoMarkerLayer || !dominantCache || !coordsCache) return;
+
+    // Rebuild logo markers to reflect new selectedSchool
+    addLogoMarkers(dominantCache);
+}
+
+function buildAllSchoolsLegend(dominant) {
+    const container = document.getElementById('map-allschools-legend');
+    if (!container) return;
+
+    // Count how many PC4 areas each school dominates
+    const domCount = {};
+    for (const [, info] of Object.entries(dominant.pc4)) {
+        domCount[info.dominant] = (domCount[info.dominant] || 0) + 1;
+    }
+
+    // Sort schools by number of dominated PC4s (descending)
+    const sorted = Object.entries(domCount).sort((a, b) => b[1] - a[1]);
+
+    let html = '';
+    sorted.forEach(([tSchool]) => {
+        const colorIdx = dominant.colors[tSchool];
+        const color = dominant.palette[colorIdx !== undefined ? colorIdx : 0];
+        const name = dominant.schoolNames[tSchool] || tSchool;
+
+        html += `<div class="map-allschools-legend-item">
+            <span class="map-allschools-legend-dot" style="background:${color}"></span>
+            <span>${name}</span>
+        </div>`;
+    });
+
+    container.innerHTML = html;
+}
+
