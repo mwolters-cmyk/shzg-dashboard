@@ -322,6 +322,38 @@ function createBarChart(canvasId, labels, datasets, opts = {}) {
     return c;
 }
 
+function createStackedBarChart(canvasId, labels, datasets) {
+    const ctx = document.getElementById(canvasId);
+    if (!ctx) return null;
+    const c = new Chart(ctx, {
+        type: 'bar',
+        data: { labels, datasets },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'top', labels: { font: { size: 11 }, boxWidth: 12 } },
+                tooltip: {
+                    callbacks: {
+                        label: (ctx) => `${ctx.dataset.label}: ${ctx.parsed.y.toFixed(1).replace('.', ',')}%`
+                    }
+                },
+            },
+            scales: {
+                x: { stacked: true, ticks: { font: { size: 11 } } },
+                y: {
+                    stacked: true,
+                    beginAtZero: true,
+                    max: 100,
+                    ticks: { font: { size: 11 }, callback: v => v + '%' },
+                },
+            },
+        },
+    });
+    charts[canvasId] = c;
+    return c;
+}
+
 function createDoughnutChart(canvasId, labels, values, colors) {
     const ctx = document.getElementById(canvasId);
     if (!ctx) return null;
@@ -373,7 +405,7 @@ function renderDistributionStrips(containerId, items) {
         if (!dist || dist.n < 3) return '';
         // Center average at 50% so all avg lines are vertically aligned
         const halfRange = Math.max(dist.avg - dist.min, dist.max - dist.avg) || 1;
-        const pos = Math.max(0, Math.min(100, 50 + ((item.value - dist.avg) / (2 * halfRange)) * 100));
+        let pos = Math.max(0, Math.min(100, 50 + ((item.value - dist.avg) / (2 * halfRange)) * 100));
         const avgPos = 50;
         const hib = item.higherIsBetter !== false;
         const diff = item.value - dist.avg;
@@ -386,6 +418,8 @@ function renderDistributionStrips(containerId, items) {
         const idx = sorted.indexOf(item.value);
         const rank = hib ? dist.n - idx : idx + 1;
         const rankText = rank + 'e/' + dist.n;
+        // For higherIsBetter: false, flip the visual position so rank 1 = right
+        if (!hib) pos = 100 - pos;
         return `<div class="distribution-strip">
             <span class="strip-label" title="${item.label}">${item.label}</span>
             <div class="strip-bar-wrapper">
@@ -737,46 +771,62 @@ function renderTevredenheid() {
 // ===================== SECTION 5: DOORSTROOM =====================
 function renderVervolg() {
     const row = getPanelRow(selectedSchool, selectedYear);
-    // Also check vervolgopleidingen for the matching year
-    // Vervolgopleidingen uses calendar year (Jaar), panel uses schooljaar
-    const calYear = '20' + selectedYear.split('-')[1]; // "24-25" -> "2025"
-    const vRow = data.vervolgopleidingen.find(r =>
-        r.tSchool === selectedSchool && r['Type data'] === 'School' && r.Jaar === calYear
-    );
-    // Fallback to previous year
-    const prevCalYear = String(parseInt(calYear) - 1);
-    const vRowFallback = vRow || data.vervolgopleidingen.find(r =>
-        r.tSchool === selectedSchool && r['Type data'] === 'School' && r.Jaar === prevCalYear
-    );
 
-    const pctWo = row ? num(row.pct_wo) : (vRowFallback ? num(vRowFallback['Pct WO']) : null);
-    const pctHbo = row ? num(row.pct_hbo) : null;
+    // Grouped bar chart: doorstroom per year (WO, HBO, Geen bekostigd)
+    const years = getAllYears(selectedSchool);
+    const woData = [], hboData = [], geenData = [], labels = [];
+    years.forEach(y => {
+        const w = num(y.pct_wo);
+        const h = num(y.pct_hbo);
+        const g = num(y.pct_geen_bekostigd);
+        if (w !== null) {
+            labels.push(y.year);
+            woData.push(w);
+            hboData.push(h || 0);
+            geenData.push(g || 0);
+        }
+    });
 
-    renderKPI('vervolg-kpis', [
-        { value: pctWo !== null ? formatPct(pctWo) : '—', label: '% naar WO' },
-        { value: pctHbo !== null ? formatPct(pctHbo) : '—', label: '% naar HBO' },
-    ]);
-
-    // Doughnut chart
-    if (vRowFallback) {
-        const wo = num(vRowFallback['Naar WO']) || 0;
-        const hbo = num(vRowFallback['Naar HBO']) || 0;
-        const mbo = num(vRowFallback['Naar MBO']) || 0;
-        const vavo = num(vRowFallback['Naar VAVO']) || 0;
-        const geen = num(vRowFallback['Geen bekostigd onderwijs']) || 0;
-        const total = wo + hbo + mbo + vavo + geen;
-        if (total > 0) {
-            createDoughnutChart('chart-vervolg-doughnut',
-                ['WO', 'HBO', 'MBO', 'VAVO', 'Geen bekostigd'],
-                [wo, hbo, mbo, vavo, geen],
-                [COLORS.palette[0], COLORS.palette[1], COLORS.palette[2], COLORS.palette[3], COLORS.palette[4]]
-            );
+    if (labels.length > 0) {
+        const ctx = document.getElementById('chart-vervolg-trend');
+        if (ctx) {
+            charts['vervolg-trend'] = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels,
+                    datasets: [
+                        { label: '% WO', data: woData, backgroundColor: COLORS.palette[0] },
+                        { label: '% HBO', data: hboData, backgroundColor: COLORS.palette[1] },
+                        { label: '% Geen bekostigd', data: geenData, backgroundColor: COLORS.palette[4] },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top', labels: { font: { size: 11 }, boxWidth: 12 } },
+                        tooltip: {
+                            callbacks: {
+                                label: (c) => `${c.dataset.label}: ${c.parsed.y.toFixed(1).replace('.', ',')}%`
+                            }
+                        },
+                    },
+                    scales: {
+                        x: { ticks: { font: { size: 11 } } },
+                        y: {
+                            beginAtZero: true,
+                            ticks: { font: { size: 11 }, callback: v => v + '%' },
+                        },
+                    },
+                },
+            });
         }
     } else {
-        noData('chart-vervolg-doughnut', 'Geen doorstroomdata');
+        noData('chart-vervolg-trend', 'Geen doorstroomdata beschikbaar');
     }
 
     // Distribution strips
+    const pctWo = row ? num(row.pct_wo) : null;
     if (row && pctWo !== null) {
         renderDistributionStrips('vervolg-strips', [
             { label: '% naar WO', value: pctWo, dist: getDistribution('pct_wo', selectedYear), fmt: formatPct(pctWo) },
