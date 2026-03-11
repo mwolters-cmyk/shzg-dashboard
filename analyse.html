@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHZG Analyse</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="auth.css">
+    <script src="auth.js"></script>
+</head>
+<body>
+    <header>
+        <h1>SHZG Dashboard</h1>
+        <p class="subtitle">Stichting het Zelfstandig Gymnasium</p>
+    </header>
+
+    <!-- Page navigation -->
+    <nav id="page-nav">
+        <a href="index.html">Schoolprofiel</a>
+        <a href="compare.html">Vergelijken</a>
+        <a href="kaart.html">Kaart</a>
+        <a href="analyse.html" class="active">Analyse</a>
+    </nav>
+
+    <main id="analyse-main">
+        <section class="dashboard-section">
+            <h2>Wat verklaart de Toegevoegde Waarde?</h2>
+
+            <div class="chart-card context-explainer">
+                <h4>De onderzoeksvraag</h4>
+                <p>
+                    De <strong>Toegevoegde Waarde</strong> (TW) meet hoeveel beter of slechter een school presteert op het centraal examen
+                    dan je zou verwachten op basis van factoren waar de school zelf geen invloed op heeft: het opleidingsniveau en inkomen
+                    in het verzorgingsgebied, de stedelijkheid, de leefbaarheid van de buurt en de schoolgrootte. Een positieve TW betekent
+                    dat een school het beter doet dan vergelijkbare scholen &mdash; een negatieve TW dat er ruimte is voor verbetering.
+                    De vraag is: welke factoren <em>binnen</em> de invloedssfeer van de school hangen samen met een hogere of lagere TW?
+                    We hebben dit onderzocht voor alle 42 SHZG-gymnasia over vier schooljaren (21-22 t/m 24-25).
+                </p>
+            </div>
+
+            <div class="chart-card context-explainer">
+                <h4>Twee factoren die ertoe doen</h4>
+                <p>
+                    Van alle schoolkenmerken die we hebben getoetst, springen er twee uit.
+                    Ten eerste het <strong>weerstandsvermogen</strong>: de verhouding tussen het eigen vermogen van het bestuur en de
+                    totale baten. Scholen met een hoger weerstandsvermogen presteren significant beter dan verwacht
+                    (<em>r</em>&nbsp;=&nbsp;+0,35). Dit is geen toeval: een gezonde financi&euml;le buffer is een teken van stabiel,
+                    langetermijngericht bestuur. Het stelt scholen in staat om te investeren in kwaliteit zonder ad-hocbezuinigingen
+                    bij tegenvallers.
+                    Ten tweede het <strong>ziekteverzuim</strong> onder personeel: scholen met hoger verzuim presteren slechter dan
+                    verwacht (<em>r</em>&nbsp;=&nbsp;&minus;0,31). Het landelijk VO-gemiddelde ligt rond 6%, maar de spreiding is
+                    enorm (1% tot 15%). Meer verzuim betekent meer wisselende docenten voor de klas, minder continu&iuml;teit en
+                    minder opgebouwde relaties met leerlingen &mdash; en dat vertaalt zich in lagere CE-resultaten.
+                </p>
+            </div>
+
+            <div class="chart-card context-explainer">
+                <h4>Wat maakt g&eacute;&eacute;n verschil?</h4>
+                <p>
+                    Opvallend is wat er <em>niet</em> uitmaakt. De gemiddelde docentloonsom, het percentage LD-docenten,
+                    de leerling-leraarratio, de leerlingtevredenheid en het zittenblijverspercentage &mdash; geen van deze factoren
+                    hangt significant samen met de TW. Dat wil niet zeggen dat ze onbelangrijk zijn voor het onderwijs, maar ze
+                    voorspellen niet of een school boven of onder verwachting presteert op het centraal examen. Het verschil
+                    zit kennelijk niet in <em>hoeveel</em> je aan personeel uitgeeft, maar in hoe stabiel de organisatie draait.
+                </p>
+            </div>
+
+            <div class="chart-card context-explainer">
+                <h4>Hoe betrouwbaar is dit?</h4>
+                <p>
+                    Met 42 gymnasia is het een kleine steekproef, en de CE-resultaten schommelen flink van jaar tot jaar.
+                    Slechts &eacute;&eacute;n school presteert in alle vier jaren onder verwachting; de meeste scholen wisselen
+                    tussen goede en minder goede jaren. Dat is normaal: er zit veel toeval in examencijfers. Maar
+                    weerstandsvermogen en ziekteverzuim zijn de twee factoren die door die ruis heen komen. Met
+                    respectievelijk <em>p</em>&nbsp;=&nbsp;0,034 en <em>p</em>&nbsp;=&nbsp;0,052 zijn ze voor een populatie
+                    van 42 scholen overtuigend &mdash; dit zijn geen toevalstreffers.
+                </p>
+            </div>
+
+            <div class="chart-card context-explainer">
+                <h4>Concrete actiepunten</h4>
+                <p>
+                    <strong>Weerstandsvermogen versterken:</strong> zet structureel risicomanagement op, benut de meerjarenbegroting
+                    actief, en investeer wanneer de reserves het toelaten &mdash; maar houd het structureel houdbaar.
+                    Transparante verantwoording in het bestuursverslag helpt om financieel beleid bespreekbaar te maken. Zie ook
+                    de publicaties van <a href="https://verus.nl/nieuws/grip-krijgen-op-risicos-en-weerstandsvermogen-hoe-doe-je-dat" target="_blank">Verus</a>
+                    over risicomanagement in het onderwijs.
+                </p>
+                <p>
+                    <strong>Ziekteverzuim terugdringen:</strong> begin met vroegtijdig casemanagement &mdash; snel contact met een
+                    verzuimende medewerker maakt een groot verschil. Investeer in preventie: werkdrukvermindering
+                    (het <a href="https://www.voion.nl/veilig-en-vitaal-werken/wetgeving-en-beleid/verzuimbeleid/van-verzuiminzicht-naar-aanpak" target="_blank">Werkdrukakkoord</a>
+                    biedt hiervoor middelen), gezondheidsscreenings en een welzijnscultuur waarin medewerkers zich gesteund voelen.
+                    Cruciaal is <em>consistent</em> beleid: niet alleen aandacht voor verzuim als het hoog oploopt, maar structureel
+                    monitoren en bijsturen. Zie <a href="https://www.voion.nl" target="_blank">Voion</a> en
+                    <a href="https://www.vfpf.nl" target="_blank">VfPf</a> voor handreikingen.
+                </p>
+            </div>
+
+        </section>
+    </main>
+
+    <footer>
+        <p>SHZG Dashboard &mdash; Analyse</p>
+    </footer>
+</body>
+</html>
