@@ -1492,6 +1492,10 @@ let mapInstance = null;
 let mapMarkers = [];
 let mapLabels = [];
 let coordsCache = null;
+let herkomstCache = null;
+let pc4Cache = null;
+let choroplethLayer = null;
+let heatmapVisible = false;
 
 async function loadCoordinates() {
     if (coordsCache) return coordsCache;
@@ -1526,13 +1530,19 @@ async function renderKaart() {
         // Show/hide labels based on zoom level
         mapInstance.on('zoomend', updateMapLabels);
 
-        // Zoom button
+        // Zoom button — zoom out a bit when heatmap is visible
         const btn = document.getElementById('map-zoom-btn');
         if (btn) {
             btn.addEventListener('click', () => {
                 const c = coords[selectedSchool];
-                if (c) mapInstance.flyTo([c.lat, c.lng], 13, { duration: 0.8 });
+                if (c) mapInstance.flyTo([c.lat, c.lng], heatmapVisible ? 10 : 13, { duration: 0.8 });
             });
+        }
+
+        // Heatmap toggle button
+        const heatBtn = document.getElementById('map-heatmap-btn');
+        if (heatBtn) {
+            heatBtn.addEventListener('click', () => toggleHeatmap());
         }
     }
 
@@ -1616,6 +1626,11 @@ async function renderKaart() {
 
     updateMapLabels();
 
+    // Update choropleth if visible
+    if (heatmapVisible && choroplethLayer) {
+        updateChoropleth();
+    }
+
     // Ensure map renders correctly (fix for container resize)
     setTimeout(() => { if (mapInstance) mapInstance.invalidateSize(); }, 200);
 }
@@ -1635,5 +1650,174 @@ function updateMapLabels() {
             // Hide labels at low zoom
             if (mapInstance.hasLayer(label)) mapInstance.removeLayer(label);
         }
+    });
+}
+
+/* ===== Leerlingherkomst Heatmap ===== */
+
+async function loadHerkomst() {
+    if (herkomstCache) return herkomstCache;
+    try {
+        const resp = await fetch(DATA_BASE + 'herkomst.json');
+        herkomstCache = await resp.json();
+    } catch (e) {
+        herkomstCache = {};
+    }
+    return herkomstCache;
+}
+
+async function loadPC4Boundaries() {
+    if (pc4Cache) return pc4Cache;
+    try {
+        const resp = await fetch(DATA_BASE + 'pc4_grenzen.topojson.json');
+        pc4Cache = await resp.json();
+    } catch (e) {
+        pc4Cache = null;
+    }
+    return pc4Cache;
+}
+
+function getHeatColor(count, maxCount) {
+    if (!count || count <= 0) return { fillColor: '#fef6ec', fillOpacity: 0 };
+    // Use sqrt scale so that a few large values don't dominate all color
+    const t = Math.sqrt(count) / Math.sqrt(maxCount);
+    const clamped = Math.min(Math.max(t, 0), 1);
+    // Interpolate from light (#fbc68b) through mid (#e67e22) to dark (#d35400)
+    const r = Math.round(251 - clamped * (251 - 211));
+    const g = Math.round(198 - clamped * (198 - 84));
+    const b = Math.round(139 - clamped * (139 - 0));
+    const opacity = 0.15 + clamped * 0.65;
+    return { fillColor: `rgb(${r},${g},${b})`, fillOpacity: opacity };
+}
+
+async function toggleHeatmap() {
+    const btn = document.getElementById('map-heatmap-btn');
+    const legend = document.getElementById('map-legend');
+    const note = document.getElementById('map-source-note');
+
+    if (heatmapVisible) {
+        // Turn off
+        heatmapVisible = false;
+        if (btn) { btn.textContent = 'Toon leerlingherkomst'; btn.classList.remove('active'); }
+        if (legend) legend.style.display = 'none';
+        if (note) note.style.display = 'none';
+        if (choroplethLayer && mapInstance) {
+            mapInstance.removeLayer(choroplethLayer);
+        }
+        return;
+    }
+
+    // Turn on — lazy-load data
+    if (btn) { btn.textContent = 'Laden...'; btn.disabled = true; }
+
+    const [herkomst, topo] = await Promise.all([loadHerkomst(), loadPC4Boundaries()]);
+
+    if (!topo || !herkomst) {
+        if (btn) { btn.textContent = 'Toon leerlingherkomst'; btn.disabled = false; }
+        return;
+    }
+
+    heatmapVisible = true;
+    if (btn) { btn.textContent = 'Verberg leerlingherkomst'; btn.disabled = false; btn.classList.add('active'); }
+    if (legend) legend.style.display = 'block';
+    if (note) note.style.display = 'block';
+
+    // Build choropleth layer (once) from TopoJSON
+    if (!choroplethLayer) {
+        const objectKey = Object.keys(topo.objects)[0];
+        const geojson = topojson.feature(topo, topo.objects[objectKey]);
+
+        choroplethLayer = L.geoJson(geojson, {
+            style: () => ({
+                fillColor: '#fef6ec',
+                fillOpacity: 0,
+                color: '#c0c0c0',
+                weight: 0.5,
+                opacity: 0.4,
+            }),
+            onEachFeature: (feature, layer) => {
+                layer.on({
+                    mouseover: highlightPC4,
+                    mouseout: resetPC4,
+                });
+            },
+        });
+    }
+
+    // Add choropleth below markers
+    choroplethLayer.addTo(mapInstance);
+    choroplethLayer.bringToBack();
+
+    // Color it for current school
+    updateChoropleth();
+}
+
+function updateChoropleth() {
+    if (!choroplethLayer || !herkomstCache) return;
+
+    const schoolData = herkomstCache[selectedSchool] || {};
+    const counts = Object.values(schoolData);
+    const maxCount = counts.length > 0 ? Math.max(...counts) : 1;
+
+    // Update legend max
+    const legendMax = document.getElementById('map-legend-max');
+    if (legendMax) legendMax.textContent = maxCount > 0 ? maxCount : '?';
+
+    // Update polygon styles
+    choroplethLayer.eachLayer(layer => {
+        const pc4 = String(layer.feature.properties.postcode);
+        const count = schoolData[pc4] || 0;
+        const { fillColor, fillOpacity } = getHeatColor(count, maxCount);
+
+        layer.setStyle({
+            fillColor,
+            fillOpacity,
+            color: count > 0 ? '#b87333' : '#c0c0c0',
+            weight: count > 0 ? 0.8 : 0.3,
+            opacity: count > 0 ? 0.6 : 0.2,
+        });
+
+        // Update tooltip content
+        if (count > 0) {
+            const total = counts.reduce((a, b) => a + b, 0);
+            const pct = total > 0 ? ((count / total) * 100).toFixed(1) : '?';
+            const approx = count === 2 ? ' (geschat)' : '';
+            layer.unbindTooltip();
+            layer.bindTooltip(
+                `<b>PC4 ${pc4}</b><br>${count} leerling${count !== 1 ? 'en' : ''}${approx} (${pct}%)`,
+                { sticky: true, className: 'map-label' }
+            );
+        } else {
+            layer.unbindTooltip();
+        }
+    });
+}
+
+function highlightPC4(e) {
+    const layer = e.target;
+    const pc4 = String(layer.feature.properties.postcode);
+    const schoolData = herkomstCache ? (herkomstCache[selectedSchool] || {}) : {};
+    const count = schoolData[pc4] || 0;
+    if (count > 0) {
+        layer.setStyle({
+            weight: 2.5,
+            color: '#d35400',
+            opacity: 0.9,
+        });
+        layer.bringToFront();
+        // Re-bring markers to front
+        mapMarkers.forEach(m => m.bringToFront());
+    }
+}
+
+function resetPC4(e) {
+    const layer = e.target;
+    const pc4 = String(layer.feature.properties.postcode);
+    const schoolData = herkomstCache ? (herkomstCache[selectedSchool] || {}) : {};
+    const count = schoolData[pc4] || 0;
+    layer.setStyle({
+        color: count > 0 ? '#b87333' : '#c0c0c0',
+        weight: count > 0 ? 0.8 : 0.3,
+        opacity: count > 0 ? 0.6 : 0.2,
     });
 }

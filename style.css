@@ -768,6 +768,62 @@ footer {
     white-space: nowrap;
 }
 
+.map-controls {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.map-controls .map-zoom-btn {
+    margin-top: 0;
+}
+
+.map-zoom-btn.active {
+    background: var(--accent);
+}
+
+.map-zoom-btn.active:hover {
+    background: #d35400;
+}
+
+/* Heatmap legend */
+.map-legend {
+    margin-top: 0.75rem;
+    padding: 0.5rem 0;
+}
+
+.map-legend-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    display: block;
+    margin-bottom: 0.35rem;
+}
+
+.map-legend-bar {
+    height: 14px;
+    border-radius: 3px;
+    background: linear-gradient(to right, #fef6ec, #fbc68b, #e67e22, #d35400);
+    max-width: 280px;
+}
+
+.map-legend-labels {
+    display: flex;
+    justify-content: space-between;
+    max-width: 280px;
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    margin-top: 2px;
+}
+
+.map-source-note {
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    margin-top: 0.5rem;
+    font-style: italic;
+}
+
 @media (max-width: 768px) {
     #map-container {
         height: 400px;
