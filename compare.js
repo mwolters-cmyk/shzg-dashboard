@@ -62,11 +62,12 @@ const METRIC_GROUPS = [
     {
         section: 'context',
         gridId: 'grid-context',
+        type: 'table',
         metrics: [
-            { field: 'ses_woa',        label: 'SES (woa)',        decimals: 2 },
-            { field: 'stedelijkheid',  label: 'Stedelijkheid',    decimals: 0 },
-            { field: 'pct_migratie',   label: '% Migratieachtergrond', decimals: 1, suffix: '%' },
-            { field: 'pct_koopwoning', label: '% Koopwoning',     decimals: 1, suffix: '%' },
+            { field: 'ses_woa',        label: 'SES-WOA',               decimals: 2 },
+            { field: 'stedelijkheid',  label: 'Stedelijkheid',          decimals: 1 },
+            { field: 'pct_migratie',   label: '% Migratieachtergrond',  decimals: 1, suffix: '%' },
+            { field: 'pct_koopwoning', label: '% Koopwoning',           decimals: 1, suffix: '%' },
         ],
     },
     {
@@ -439,8 +440,27 @@ function renderMetricGroup(group) {
     const grid = document.getElementById(group.gridId);
     if (!grid) return;
 
-    // Clear old canvases
+    // Clear old content
     grid.innerHTML = '';
+
+    // Table mode: render a comparison table instead of charts
+    if (group.type === 'table') {
+        if (group.section === 'context') {
+            const explainer = document.createElement('div');
+            explainer.className = 'chart-card context-explainer';
+            explainer.innerHTML = `
+                <h4>Toelichting contextkenmerken</h4>
+                <p><strong>SES-WOA</strong> &mdash; sociaaleconomische status van het verzorgingsgebied (welvaart, opleidingsniveau, arbeidsmarkt). Hoger = hoger opgeleid/welvarender.
+                <strong>Stedelijkheid</strong> &mdash; CBS-maat (1 = zeer sterk stedelijk, 5 = niet stedelijk).
+                <strong>% Migratieachtergrond</strong> &mdash; aandeel leerlingen met een migratieachtergrond.
+                <strong>% Koopwoning</strong> &mdash; aandeel koopwoningen in het verzorgingsgebied (indicator welvaart).
+                Deze kenmerken be&iuml;nvloeden schoolprestaties maar vallen buiten de invloedssfeer van de school.</p>
+            `;
+            grid.appendChild(explainer);
+        }
+        renderComparisonTable(grid, group.metrics);
+        return;
+    }
 
     // Create one multi-line chart per metric (all years, one line per school)
     group.metrics.forEach(metric => {
@@ -453,6 +473,50 @@ function renderMetricGroup(group) {
 
         renderMetricLine(canvasId, metric);
     });
+}
+
+function renderComparisonTable(container, metrics) {
+    const card = document.createElement('div');
+    card.className = 'chart-card';
+
+    // Use latest year that has data for any selected school
+    const useYear = SCHOOL_YEARS.slice().reverse().find(y =>
+        selectedSchools.some(ts => {
+            const row = getPanelRow(ts, y);
+            return row && metrics.some(m => num(row[m.field]) !== null);
+        })
+    ) || LATEST_YEAR;
+
+    let html = `<table class="context-compare-table data-table"><thead><tr>`;
+    html += `<th>School</th>`;
+    metrics.forEach(m => { html += `<th>${m.label}</th>`; });
+    html += `</tr></thead><tbody>`;
+
+    selectedSchools.forEach(ts => {
+        const row = getPanelRow(ts, useYear);
+        const name = shortName(schoolDisplayName(ts));
+        const color = schoolColors[ts];
+        html += `<tr><td class="school-col" style="border-left: 4px solid ${color}">${name}</td>`;
+        metrics.forEach(m => {
+            const v = row ? num(row[m.field]) : null;
+            const suffix = m.suffix || '';
+            html += `<td class="num">${v !== null ? formatNum(v, m.decimals) + suffix : '\u2014'}</td>`;
+        });
+        html += `</tr>`;
+    });
+
+    // SHZG average row
+    html += `<tr class="total-row"><td class="school-col">SHZG gemiddelde</td>`;
+    metrics.forEach(m => {
+        const avg = getSHZGAverage(m.field, useYear);
+        const suffix = m.suffix || '';
+        html += `<td class="num">${avg !== null ? formatNum(avg, m.decimals) + suffix : '\u2014'}</td>`;
+    });
+    html += `</tr>`;
+
+    html += `</tbody></table>`;
+    card.innerHTML = html;
+    container.appendChild(card);
 }
 
 function renderMetricLine(canvasId, metric) {
@@ -525,8 +589,11 @@ function renderMetricLine(canvasId, metric) {
             },
             scales: {
                 y: {
-                    beginAtZero: metric.field !== 'ce_gem' && metric.field !== 'ses_woa' && metric.field !== 'se_ce_verschil',
-                    ticks: { font: { size: 11 } },
+                    beginAtZero: false,
+                    ticks: {
+                        font: { size: 11 },
+                        callback: function(v) { return metric.suffix ? v + metric.suffix : v; },
+                    },
                     title: { display: true, text: metric.label, font: { size: 11 } },
                 },
                 x: {
@@ -618,11 +685,11 @@ function renderBenchmarkComparison() {
     if (explainerEl) {
         explainerEl.innerHTML = `
             <h4>Eerlijke benchmark: wat is toegevoegde waarde?</h4>
-            <p>De toegevoegde waarde (VA) corrigeert het CE-cijfer voor factoren die de school
+            <p>De toegevoegde waarde (TW) corrigeert het CE-cijfer voor factoren die de school
             niet kan be&iuml;nvloeden: sociaaleconomische achtergrond (SES), stedelijkheid
             en leefbaarheid van het verzorgingsgebied.
-            Een <strong style="color:#27ae60">positieve VA</strong> betekent dat de school
-            beter presteert dan verwacht, een <strong style="color:#e74c3c">negatieve VA</strong> slechter.
+            Een <strong style="color:#27ae60">positieve TW</strong> betekent dat de school
+            beter presteert dan verwacht, een <strong style="color:#e74c3c">negatieve TW</strong> slechter.
             Dezelfde correctie wordt ook per vakgroep toegepast
             (Klassiek, B&egrave;ta, Wiskunde, Talen, Gamma).</p>
         `;
@@ -651,7 +718,7 @@ function renderBenchmarkComparison() {
         const card = document.createElement('div');
         card.className = 'chart-card';
         const canvasId = `cmp-va-${vg.toLowerCase()}`;
-        card.innerHTML = `<h3>VA ${vg}</h3>
+        card.innerHTML = `<h3>TW ${vg}</h3>
             <div class="chart-container"><canvas id="${canvasId}"></canvas></div>`;
         grid.appendChild(card);
         renderVAVakgroepLine(canvasId, vg);
@@ -719,7 +786,7 @@ function renderVASchoolLine(canvasId) {
             scales: {
                 y: {
                     ticks: { font: { size: 11 } },
-                    title: { display: true, text: 'VA (CE-punten)', font: { size: 11 } },
+                    title: { display: true, text: 'TW (CE-punten)', font: { size: 11 } },
                 },
                 x: { ticks: { font: { size: 11 } } },
             },
@@ -864,7 +931,7 @@ function renderVAVakgroepLine(canvasId, vakgroep) {
             scales: {
                 y: {
                     ticks: { font: { size: 11 } },
-                    title: { display: true, text: 'VA ' + vakgroep, font: { size: 11 } },
+                    title: { display: true, text: 'TW ' + vakgroep, font: { size: 11 } },
                 },
                 x: { ticks: { font: { size: 11 } } },
             },

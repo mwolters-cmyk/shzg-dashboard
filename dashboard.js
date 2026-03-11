@@ -839,6 +839,19 @@ function renderVervolg() {
 
 // ===================== SECTION 6: CONTEXT =====================
 function renderContext() {
+    // Explainer
+    const explainer = document.getElementById('context-explainer');
+    if (explainer) {
+        explainer.innerHTML = `
+            <h4>Toelichting contextkenmerken</h4>
+            <p><strong>SES-WOA</strong> &mdash; sociaaleconomische status van het verzorgingsgebied (welvaart, opleidingsniveau, arbeidsmarkt). Hoger = hoger opgeleid/welvarender.
+            <strong>Stedelijkheid</strong> &mdash; CBS-maat (1 = zeer sterk stedelijk, 5 = niet stedelijk).
+            <strong>% Migratieachtergrond</strong> &mdash; aandeel leerlingen met een migratieachtergrond.
+            <strong>% Koopwoning</strong> &mdash; aandeel koopwoningen in het verzorgingsgebied (indicator welvaart).
+            Deze kenmerken be&iuml;nvloeden schoolprestaties maar vallen buiten de invloedssfeer van de school.</p>
+        `;
+    }
+
     const row = getPanelRow(selectedSchool, selectedYear);
     const cbsRow = data.herkomst.find(r =>
         r.tSchool === selectedSchool && r['Type data'] === 'School'
@@ -1209,7 +1222,7 @@ function renderBenchmark() {
     const vakRows = getVAVakgroepRows(selectedSchool);
 
     if (vaRows.length === 0) {
-        noData('benchmark-kpis', 'Geen VA-data beschikbaar voor deze school');
+        noData('benchmark-kpis', 'Geen TW-data beschikbaar voor deze school');
         return;
     }
 
@@ -1241,7 +1254,7 @@ function renderBenchmark() {
         },
         {
             value: avgVA !== null ? (avgVA >= 0 ? '+' : '') + formatNum(avgVA, 3) : '—',
-            label: 'Gem. VA (alle jaren)',
+            label: 'Gem. TW (alle jaren)',
         },
     ]);
 
@@ -1315,7 +1328,7 @@ function renderBenchmark() {
                             label: (item) => {
                                 const v = item.raw;
                                 if (v === null) return 'Geen data';
-                                return 'VA: ' + (v >= 0 ? '+' : '') + formatNum(v, 3);
+                                return 'TW: ' + (v >= 0 ? '+' : '') + formatNum(v, 3);
                             }
                         }
                     },
@@ -1333,7 +1346,7 @@ function renderBenchmark() {
         charts['chart-va-resid'] = c;
     }
 
-    // Chart 3: Vakgroep profile (bar chart: VA per vakgroep, average over all years)
+    // Chart 3: Vakgroep profile (bar chart: TW per vakgroep, average over all years)
     renderVakgroepProfile(vakRows);
 
     // Chart 4: Vakgroep trend (multi-line)
@@ -1387,7 +1400,7 @@ function renderVakgroepProfile(vakRows) {
                         label: (item) => {
                             const v = item.raw;
                             if (v === null) return 'Geen data';
-                            return 'VA: ' + (v >= 0 ? '+' : '') + formatNum(v, 3);
+                            return 'TW: ' + (v >= 0 ? '+' : '') + formatNum(v, 3);
                         }
                     }
                 },
@@ -1459,7 +1472,7 @@ function renderVakgroepTrend(vakRows) {
             scales: {
                 y: {
                     ticks: { font: { size: 11 } },
-                    title: { display: true, text: 'VA (CE-punten)', font: { size: 11 } },
+                    title: { display: true, text: 'TW (CE-punten)', font: { size: 11 } },
                 },
                 x: { ticks: { font: { size: 11 } } },
             },
@@ -1503,10 +1516,10 @@ function renderVAStrips(currentVA) {
     };
 
     const items = [
-        { label: 'VA ' + selectedYear, value: currentVA, dist: dist, higherIsBetter: true, decimals: 3 },
+        { label: 'TW ' + selectedYear, value: currentVA, dist: dist, higherIsBetter: true, decimals: 3 },
     ];
     if (avgVA !== null && avgDist.n >= 3) {
-        items.push({ label: 'Gem. VA (alle jaren)', value: avgVA, dist: avgDist, higherIsBetter: true, decimals: 3 });
+        items.push({ label: 'Gem. TW (alle jaren)', value: avgVA, dist: avgDist, higherIsBetter: true, decimals: 3 });
     }
 
     // Add vakgroep strips for latest year
@@ -1532,7 +1545,7 @@ function renderVAStrips(currentVA) {
             avg: vgValues.reduce((s, v) => s + v, 0) / vgValues.length,
             n: vgValues.length,
         };
-        items.push({ label: 'VA ' + vg, value: vgVal, dist: vgDist, higherIsBetter: true, decimals: 3 });
+        items.push({ label: 'TW ' + vg, value: vgVal, dist: vgDist, higherIsBetter: true, decimals: 3 });
     });
 
     renderDistributionStrips('benchmark-strips', items);
