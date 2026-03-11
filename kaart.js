@@ -493,7 +493,7 @@ function resetPC4(e) {
 async function loadDominant() {
     if (dominantCache) return dominantCache;
     try {
-        const resp = await fetch(DATA_BASE + 'dominant.json');
+        const resp = await fetch(DATA_BASE + 'dominant.json?v=2');
         dominantCache = await resp.json();
     } catch (e) {
         dominantCache = null;
