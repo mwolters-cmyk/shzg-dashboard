@@ -1,0 +1,42 @@
+Type data;tSchool;Jaar;Aantal leerlingen;Leerling-leraar ratio;FTE totaal;FTE management;FTE onderwijzend;FTE ondersteuning;Pct OP schaal LA;Pct OP schaal LB;Pct OP schaal LC;Pct OP schaal LD;Pct OP schaal LE;Gem loonsom OP bruto;Bevoegd gezag;Bevoegd gezag naam;Eenpitter
+School;01. 13652-20AA-000;2023;690;18,0;55,7;5,0;38,4;12,3;0,0;28,5;41,8;29,8;0,0;5530;13652;Stichting Openbaar Voortgezet Onderwijs Noord-Holland-Noord;0
+School;02. 41208-20CK-000;2023;890;18,1;67,0;1,0;49,2;16,8;0,0;22,7;37,0;40,3;0,0;5648;41208;Stichting Onderwijsgroep Amersfoort;0
+School;03. 13556-21AB-000;2023;806;17,9;63,0;3,0;44,9;15,1;0,0;12,8;26,5;60,7;0,0;5876;13556;Onderwijsstichting Zelfstandige Gymnasia;0
+School;04. 40776-01ET-000;2022;782;17,7;57,9;2,8;44,2;11,0;0,0;11,2;34,2;54,7;0,0;5470;40776;Stichting V.O. Amsterdam-Zuid;0
+School;05. 13556-21AF-000;2023;830;16,9;63,6;1,0;49,0;13,6;0,0;11,5;37,8;50,7;0,0;5998;13556;Onderwijsstichting Zelfstandige Gymnasia;0
+School;06. 42818-20QU-000;2023;575;17,8;34,5;1,8;32,3;0,4;0,0;35,9;23,0;39,3;0,0;5614;42818;Stichting Veluwse Onderwijsgroep;0
+School;07. 13554-20RM-000;2023;690;18,0;53,4;0,0;38,4;15,1;0,0;31,0;34,1;34,9;0,0;5628;13554;Stichting Quadraam;0
+School;08. 41211-02FY-007;2023;1878;15,2;193,5;6,1;123,7;63,2;0,0;44,0;31,8;24,2;0,0;5319;41211;Ons Middelbaar Onderwijs;0
+School;09. 42992-03AM-000;2023;738;17,4;65,3;1,6;42,5;21,2;0,0;17,9;37,2;43,9;0,0;5864;42992;LibrÃ©on, Stichting voor Katholiek en Openbaar Voortgezet Onderwijs;0
+School;10. 40856-02QP-000;2023;367;14,9;31,5;1,0;24,6;5,9;0,0;22,3;43,1;34,7;0,0;5758;40856;Stichting Onderwijsgroep Oost-Brabant;0
+School;11. 41513-20KZ-000;2023;750;17,2;63,1;2,0;43,7;17,3;0,0;22,6;30,4;47,0;0,0;5615;41513;Stg. Johan de Witt-gymnasium te Dordrecht;1
+School;13. 41386-19ZU-000;2023;648;18,6;46,4;1,0;34,8;10,6;0,0;17,0;40,0;43,0;0,0;5747;41386;Stg. Openbaar Verenigd Onderw. in Gorinchem en de regio;0
+School;14. 41525-20AI-000;2023;653;16,4;56,2;1,0;39,7;15,5;0,0;19,8;40,4;39,8;0,0;5581;41525;Stichting Openbaar Voortgezet Onderwijs Gouda;0
+School;15. 41360-20LU-000;2023;813;17,5;59,6;2,0;46,5;11,1;0,0;20,2;24,7;53,0;2,1;5679;41360;Stichting Voortgezet Onderwijs Haaglanden;0
+School;16. 33944-02DQ-000;2023;780;17,1;60,1;1,0;45,5;13,6;0,0;5,1;39,0;49,3;6,6;5919;33944;Verenig. Het 's-Gravenh. Christel. Gymnas. Sorghvliet;1
+School;17. 42510-20BV-000;2022;782;17,4;64,6;3,0;44,9;12,7;0,0;32,3;27,0;40,7;0,0;5044;42510;Stichting Openbaar Onderwijs Groningen;0
+School;18. 31240-02CR-000;2023;690;14,9;61,6;6,1;46,2;9,4;0,0;37,8;26,2;36,1;0,0;5475;31240;Willem Lodewijk Gymnasium;1
+School;19. 13556-20QY-000;2023;823;16,3;71,5;2,0;50,4;19,1;0,0;16,5;21,6;61,9;0,0;5941;13556;Onderwijsstichting Zelfstandige Gymnasia;0
+School;21. 13556-02DW-000;2023;552;17,1;49,0;2,0;32,2;14,7;0,0;29,6;24,7;45,8;0,0;5663;13556;Onderwijsstichting Zelfstandige Gymnasia;0
+School;22. 13556-20AJ-000;2023;752;16,8;61,3;2,0;44,9;14,4;0,0;35,0;25,5;39,5;0,0;5511;13556;Onderwijsstichting Zelfstandige Gymnasia;0
+School;23. 13749-20DD-000;2023;838;16,6;67,1;3,0;50,6;12,6;0,0;6,1;35,5;58,4;0,0;6181;13749;Stichting Gemeentelijk Gymnasium Hilversum;1
+School;25. 41347-14WI-000;2023;438;15,0;38,6;1,0;29,3;8,3;0,0;38,8;30,8;30,5;0,0;5607;41347;Verenig. voor Christel. VO in Noord- en West-FryslÆ?n;0
+School;26. 13603-20DL-002;2023;4530;16,3;414,1;17,7;278,5;117,8;0,0;64,1;16,0;19,9;0,0;5043;13603;Stichting voor Openbaar Voortgezet Onderwijs FryslÃ¢n-Noord;0
+School;27. 42505-20DP-000;2023;833;12,1;94,2;2,0;69,1;23,1;0,0;6,7;28,1;65,2;0,0;5938;42505;Stichting Stedelijk Gymnasium Leiden;0
+School;27. 42505-30GD-000;2023;893;21,6;45,5;0,0;41,3;4,2;0,0;1,5;21,4;77,2;0,0;6204;42505;Stichting Stedelijk Gymnasium Leiden;0
+School;28. 41211-17JY-000;2023;657;15,2;58,0;1,0;43,1;13,9;0,0;15,9;29,9;54,2;0,0;5782;41211;Ons Middelbaar Onderwijs;0
+School;29. 41285-20CI-000;2023;993;18,7;79,7;2,0;53,1;24,6;0,0;37,9;25,0;37,2;0,0;5612;41285;Stichting @voCampus;0
+School;30. 42992-02QO-000;2023;621;17,6;52,8;2,0;35,3;15,5;0,0;30,4;19,4;49,1;0,0;5781;42992;LibrÃ©on, Stichting voor Katholiek en Openbaar Voortgezet Onderwijs;0
+School;31. 41775-15SC-000;2023;1076;17,5;80,2;2,0;61,4;16,7;0,0;2,8;46,1;51,1;0,0;5937;41775;Stichting BOOR;0
+School;32. 20151-14QT-000;2023;543;17,7;40,9;4,6;30,7;5,6;0,0;25,5;25,0;49,5;0,0;5762;20151;Ver. Chr. Voortgezet Onderwijs te Rotterdam en omgeving;0
+School;33. 41568-20DC-000;2023;532;18,0;40,1;1,2;29,6;9,3;0,0;25,9;27,4;46,6;0,0;5663;41568;Stichting Openbare Scholengr. Vlaardingen Schiedam (OSVS);0
+School;35. 40094-16PA-000;2023;997;18,9;68,7;3,8;52,7;12,2;0,0;0,0;50,2;49,8;0,0;5859;40094;De Willibrord St. v. rk, pc en Int.conf. Voortg. Ond. Utr. e;0
+School;36. 41475-15JM-000;2023;1173;19,3;78,2;4,0;60,9;13,3;0,0;6,2;41,6;52,1;0,0;5812;41475;Sticht. Openb. Voortg. Onderw. Utrecht en Omstreken;0
+School;37. 13556-20DG-000;2023;585;16,4;50,4;2,0;35,7;12,7;0,0;6,8;30,5;62,7;0,0;6090;13556;Onderwijsstichting Zelfstandige Gymnasia;0
+School;38. 42623-20CF-000;2023;683;15,7;58,7;2,0;43,6;11,8;0,0;29,6;23,8;46,6;0,0;5701;42623;Stichting Openbaar Onderwijs Zwolle en Regio;0
+School;41. 42620-01FP-004;2023;3689;16,1;320,8;4,0;229,3;87,6;0,0;41,9;37,0;19,4;0,0;5125;42620;Het Baken Almere, Stichting Interconfess. Voortg. Onderw.;1
+School;42. 40586-30GC-000;2023;826;15,6;70,3;1,8;53,0;15,2;0,0;18,9;27,8;53,3;0,0;5687;40586;Onderwijsstichting Esprit;0
+School;43. 42621-14RF-006;2023;2725;12,9;284,0;4,0;210,8;69,1;0,0;20,7;42,8;36,5;0,0;5544;42621;Stichting ZAAM, Interconfessioneel Voortgezet Onderwijs;0
+School;44. 20151-31RY-000;2023;736;19,9;51,6;4,0;37,0;10,6;0,0;25,7;29,7;44,7;0,0;5471;20151;Ver. Chr. Voortgezet Onderwijs te Rotterdam en omgeving;0
+School;45. 99048-19HV-000;2023;1061;15,9;122,0;5,4;66,9;49,7;0,0;49,4;13,8;35,3;1,5;5421;99048;Stichting Voortgezet Onderwijs Parkstad Limburg;0
+School;46. 41298-02VO-000;2023;916;17,3;63,0;1,0;53,0;8,9;0,0;20,4;43,0;31,1;5,5;5438;41298;Stg. Scholengroep Spinoza voor VO te Voorb., Leidschendam eo;0

@@ -1,0 +1,313 @@
+/* === Page Navigation === */
+#page-nav {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    background: var(--card-bg);
+    border-bottom: 2px solid var(--border);
+}
+
+#page-nav a {
+    padding: 0.55rem 1.5rem;
+    text-decoration: none;
+    color: var(--text-light);
+    font-weight: 600;
+    font-size: 0.88rem;
+    border-bottom: 3px solid transparent;
+    transition: all 0.15s;
+}
+
+#page-nav a:hover {
+    color: var(--primary-light);
+    background: rgba(41, 128, 185, 0.04);
+}
+
+#page-nav a.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+}
+
+/* === School Picker (custom multi-select) === */
+.school-picker {
+    position: relative;
+}
+
+.picker-btn {
+    min-width: 280px;
+    max-width: 420px;
+    padding: 0.45rem 0.8rem;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.88rem;
+    background: var(--card-bg);
+    cursor: pointer;
+    text-align: left;
+    color: var(--text);
+    transition: border-color 0.15s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.picker-btn:hover,
+.picker-btn:focus {
+    border-color: var(--primary-light);
+    outline: none;
+}
+
+.picker-dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    width: 360px;
+    max-height: 420px;
+    background: var(--card-bg);
+    border: 2px solid var(--primary-light);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+}
+
+.picker-search {
+    width: 100%;
+    padding: 0.5rem 0.8rem;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.85rem;
+    outline: none;
+    border-radius: 8px 8px 0 0;
+}
+
+.picker-search:focus {
+    background: #fafbfc;
+}
+
+.picker-actions {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.35rem 0.6rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.picker-action-btn {
+    padding: 0.2rem 0.6rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--bg);
+    font-size: 0.75rem;
+    cursor: pointer;
+    color: var(--text);
+    transition: all 0.15s;
+}
+
+.picker-action-btn:hover {
+    background: #eaf2f8;
+    border-color: var(--primary-light);
+}
+
+.picker-list {
+    overflow-y: auto;
+    max-height: 320px;
+    padding: 0.3rem 0;
+}
+
+.picker-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.8rem;
+    cursor: pointer;
+    font-size: 0.82rem;
+    transition: background 0.1s;
+}
+
+.picker-item:hover {
+    background: #eaf2f8;
+}
+
+.picker-item.selected {
+    background: rgba(41, 128, 185, 0.08);
+    font-weight: 600;
+}
+
+.picker-item.disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.picker-item input[type="checkbox"] {
+    accent-color: var(--primary);
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+
+.picker-item .school-name {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.picker-item .school-city {
+    font-size: 0.72rem;
+    color: var(--text-light);
+    white-space: nowrap;
+}
+
+/* === Control hint === */
+.control-hint {
+    font-size: 0.78rem;
+    color: var(--text-light);
+    font-style: italic;
+}
+
+.inspectie-year-label {
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: var(--text-light);
+}
+
+/* === Chip Bar === */
+.chip-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    padding: 0.4rem 1.5rem;
+    min-height: 1.8rem;
+}
+
+.chip-bar:empty {
+    display: none;
+}
+
+.school-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: 14px;
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+}
+
+.school-chip .chip-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.7);
+}
+
+.chip-remove {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.8);
+    cursor: pointer;
+    font-size: 0.85rem;
+    padding: 0 0.1rem;
+    line-height: 1;
+    font-weight: 700;
+}
+
+.chip-remove:hover {
+    color: #fff;
+}
+
+/* === Compare Chart Grid === */
+.compare-chart-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* === Compare Main === */
+#compare-main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1.5rem;
+}
+
+#compare-main .dashboard-section {
+    margin-bottom: 2rem;
+    scroll-margin-top: 70px;
+}
+
+/* === Inspectie Compare Table === */
+.inspectie-compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+}
+
+.inspectie-compare-table th {
+    background: var(--primary);
+    color: white;
+    padding: 0.5rem 0.7rem;
+    text-align: left;
+    position: sticky;
+    top: 0;
+    font-weight: 600;
+    font-size: 0.78rem;
+}
+
+.inspectie-compare-table td {
+    padding: 0.4rem 0.7rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.inspectie-compare-table tr:hover td {
+    background: #eaf2f8;
+}
+
+.inspectie-compare-table .school-col {
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* === Placeholder === */
+#placeholder {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-light);
+    font-size: 1rem;
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+    .picker-btn {
+        min-width: 200px;
+    }
+
+    .picker-dropdown {
+        width: 300px;
+    }
+
+    .compare-chart-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .chip-bar {
+        padding: 0.4rem 1rem;
+    }
+
+    #compare-main {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .picker-btn {
+        min-width: 160px;
+        font-size: 0.82rem;
+    }
+
+    .picker-dropdown {
+        width: calc(100vw - 2rem);
+        left: -0.5rem;
+    }
+}

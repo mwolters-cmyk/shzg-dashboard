@@ -1,0 +1,721 @@
+/* === Reset & Base === */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --primary: #1a5276;
+    --primary-light: #2980b9;
+    --accent: #e67e22;
+    --accent-red: #e74c3c;
+    --success: #27ae60;
+    --bg: #f4f6f8;
+    --card-bg: #ffffff;
+    --text: #2c3e50;
+    --text-light: #7f8c8d;
+    --border: #dce1e6;
+    --radius: 10px;
+    --shadow: 0 2px 8px rgba(0,0,0,0.08);
+    --sidebar-width: 180px;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    min-height: 100vh;
+}
+
+/* === Header === */
+header {
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: white;
+    padding: 1.2rem 2rem;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+header .subtitle {
+    opacity: 0.85;
+    font-size: 0.9rem;
+    margin-top: 0.15rem;
+}
+
+/* === Controls (sticky) === */
+#controls {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--card-bg);
+    padding: 0.6rem 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.control-group label {
+    font-weight: 600;
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+#school-select {
+    min-width: 320px;
+    max-width: 500px;
+    padding: 0.45rem 0.8rem;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.9rem;
+    background: var(--card-bg);
+}
+
+#school-select:focus {
+    border-color: var(--primary-light);
+    outline: none;
+}
+
+/* === Year Selector === */
+.year-selector {
+    display: flex;
+    gap: 0;
+}
+
+.year-btn {
+    padding: 0.35rem 0.7rem;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text);
+    transition: all 0.15s;
+}
+
+.year-btn:first-child { border-radius: 6px 0 0 6px; }
+.year-btn:last-child { border-radius: 0 6px 6px 0; }
+.year-btn + .year-btn { border-left: none; }
+
+.year-btn:hover {
+    background: #eaf2f8;
+}
+
+.year-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+/* === Loading === */
+.loading-overlay {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem;
+    gap: 1rem;
+    color: var(--text-light);
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--border);
+    border-top-color: var(--primary-light);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* === Layout === */
+#layout {
+    display: flex;
+    min-height: calc(100vh - 200px);
+}
+
+/* === Sidebar Navigation === */
+#section-nav {
+    position: sticky;
+    top: 60px;
+    align-self: flex-start;
+    width: var(--sidebar-width);
+    min-width: var(--sidebar-width);
+    padding: 1rem 0 1rem 0.5rem;
+    height: fit-content;
+}
+
+#section-nav a {
+    display: block;
+    padding: 0.4rem 0.8rem;
+    color: var(--text-light);
+    text-decoration: none;
+    border-left: 3px solid transparent;
+    font-size: 0.82rem;
+    transition: all 0.15s;
+    margin-bottom: 0.1rem;
+}
+
+#section-nav a:hover {
+    color: var(--primary-light);
+}
+
+#section-nav a.active {
+    color: var(--primary);
+    border-left-color: var(--primary);
+    font-weight: 600;
+    background: rgba(41, 128, 185, 0.05);
+}
+
+/* === Main Content === */
+#dashboard {
+    flex: 1;
+    max-width: 1000px;
+    padding: 1.5rem 1.5rem 1.5rem 1rem;
+}
+
+/* === Dashboard Sections === */
+.dashboard-section {
+    margin-bottom: 2rem;
+    scroll-margin-top: 70px;
+}
+
+.dashboard-section > h2 {
+    font-size: 1.2rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 2px solid var(--primary-light);
+}
+
+/* === KPI Grid === */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+}
+
+.kpi-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 1rem;
+    text-align: center;
+    box-shadow: var(--shadow);
+}
+
+.kpi-value {
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1.2;
+}
+
+.kpi-value .trend {
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-left: 0.2rem;
+    vertical-align: super;
+}
+
+.kpi-value .trend.up { color: var(--success); }
+.kpi-value .trend.down { color: var(--accent-red); }
+.kpi-value .trend.neutral { color: var(--text-light); }
+
+.kpi-label {
+    font-size: 0.75rem;
+    color: var(--text-light);
+    margin-top: 0.2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+/* === Chart Cards === */
+.chart-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 1.2rem;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow);
+}
+
+.chart-card h3 {
+    font-size: 0.95rem;
+    color: var(--primary);
+    margin-bottom: 0.8rem;
+}
+
+.chart-container {
+    position: relative;
+    width: 100%;
+    min-height: 250px;
+}
+
+.chart-container.chart-sm {
+    min-height: 200px;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.chart-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* === School Info Card === */
+.school-info-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 1.2rem 1.5rem;
+    box-shadow: var(--shadow);
+    margin-bottom: 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem 2rem;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.info-label {
+    font-size: 0.7rem;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.info-value {
+    font-weight: 600;
+    font-size: 0.92rem;
+}
+
+.info-value a {
+    color: var(--primary-light);
+    text-decoration: none;
+}
+
+.info-value a:hover {
+    text-decoration: underline;
+}
+
+/* === Tags === */
+.tag {
+    display: inline-block;
+    padding: 0.15rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.tag.gymnasium { background: #eaf2f8; color: var(--primary); }
+.tag.atheneum { background: #fef9e7; color: #d68910; }
+.tag.gemengd { background: #f4ecf7; color: #7d3c98; }
+.tag.eenpitter { background: #eafaf1; color: var(--success); }
+
+/* === Distribution Strips === */
+.strip-container {
+    padding: 0.3rem 0;
+}
+
+.distribution-strip {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0.35rem 0;
+    font-size: 0.82rem;
+}
+
+.strip-label {
+    min-width: 150px;
+    max-width: 150px;
+    color: var(--text);
+    font-size: 0.8rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.strip-bar-wrapper {
+    flex: 1;
+    min-width: 180px;
+    position: relative;
+}
+
+.strip-bar {
+    height: 18px;
+    background: var(--bg);
+    border-radius: 3px;
+    position: relative;
+    overflow: visible;
+}
+
+.strip-range {
+    position: absolute;
+    height: 100%;
+    background: #e8ecf0;
+    border-radius: 3px;
+}
+
+.strip-marker {
+    position: absolute;
+    width: 10px;
+    height: 18px;
+    border-radius: 2px;
+    top: 0;
+    z-index: 2;
+    transition: left 0.3s;
+}
+
+.strip-marker.above { background: var(--success); }
+.strip-marker.below { background: var(--accent-red); }
+.strip-marker.near { background: var(--accent); }
+
+.strip-avg-line {
+    position: absolute;
+    width: 2px;
+    height: 24px;
+    top: -3px;
+    background: var(--text-light);
+    z-index: 1;
+    opacity: 0.6;
+}
+
+.strip-value {
+    min-width: 50px;
+    text-align: right;
+    font-weight: 700;
+    font-size: 0.82rem;
+    color: var(--text);
+}
+
+.strip-rank {
+    min-width: 55px;
+    font-size: 0.75rem;
+    color: var(--text-light);
+    text-align: right;
+}
+
+/* === Tables === */
+.table-container {
+    overflow-x: auto;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+}
+
+.data-table th {
+    background: var(--primary);
+    color: white;
+    padding: 0.5rem 0.7rem;
+    text-align: left;
+    position: sticky;
+    top: 0;
+    font-weight: 600;
+    font-size: 0.78rem;
+}
+
+.data-table th.num {
+    text-align: right;
+}
+
+.data-table td {
+    padding: 0.4rem 0.7rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.data-table td.num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.data-table tr:hover td {
+    background: #eaf2f8;
+}
+
+.data-table tr.total-row td {
+    font-weight: 700;
+    background: #f0f4f8;
+    border-top: 2px solid var(--primary-light);
+}
+
+/* === Badges === */
+.badge {
+    display: inline-block;
+    padding: 0.15rem 0.5rem;
+    border-radius: 10px;
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+
+.badge.goed { background: #eafaf1; color: var(--success); }
+.badge.voldoende { background: #eaf2f8; color: var(--primary); }
+.badge.onvoldoende { background: #fdedec; color: var(--accent-red); }
+.badge.onbekend { background: var(--bg); color: var(--text-light); }
+
+/* Large badge for inspectie oordeel */
+.oordeel-badge {
+    display: inline-block;
+    padding: 0.4rem 1.2rem;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.oordeel-badge.goed { background: #d5f5e3; color: #1e8449; }
+.oordeel-badge.voldoende { background: #d6eaf8; color: var(--primary); }
+.oordeel-badge.onvoldoende { background: #fadbd8; color: #c0392b; }
+.oordeel-badge.tenzij { background: #fdebd0; color: #d68910; }
+
+/* === Inspectie indicators === */
+.inspectie-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.8rem;
+}
+
+.inspectie-item {
+    background: var(--bg);
+    border-radius: 8px;
+    padding: 0.8rem;
+    text-align: center;
+}
+
+.inspectie-item .metric-value {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--primary);
+}
+
+.inspectie-item .metric-label {
+    font-size: 0.72rem;
+    color: var(--text-light);
+    text-transform: uppercase;
+    margin-top: 0.1rem;
+}
+
+.inspectie-item .metric-oordeel {
+    margin-top: 0.3rem;
+}
+
+/* === No Data === */
+.no-data {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-light);
+    font-style: italic;
+    font-size: 0.9rem;
+}
+
+/* === Utilities === */
+.hidden {
+    display: none !important;
+}
+
+/* === Footer === */
+footer {
+    text-align: center;
+    padding: 1.5rem;
+    color: var(--text-light);
+    font-size: 0.82rem;
+}
+
+/* === Responsive === */
+@media (max-width: 1024px) {
+    #section-nav {
+        position: sticky;
+        top: 52px;
+        width: 100%;
+        min-width: 100%;
+        display: flex;
+        overflow-x: auto;
+        padding: 0.4rem 0.5rem;
+        background: var(--card-bg);
+        border-bottom: 1px solid var(--border);
+        z-index: 90;
+        gap: 0;
+    }
+
+    #section-nav a {
+        white-space: nowrap;
+        border-left: none;
+        border-bottom: 3px solid transparent;
+        padding: 0.35rem 0.7rem;
+        font-size: 0.78rem;
+    }
+
+    #section-nav a.active {
+        border-bottom-color: var(--primary);
+        border-left-color: transparent;
+    }
+
+    #layout {
+        flex-direction: column;
+    }
+
+    #dashboard {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .chart-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .school-info-card {
+        grid-template-columns: 1fr;
+    }
+
+    .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    #controls {
+        padding: 0.5rem 1rem;
+        gap: 0.5rem;
+    }
+
+    #school-select {
+        min-width: 200px;
+    }
+
+    header h1 {
+        font-size: 1.2rem;
+    }
+
+    .strip-label {
+        min-width: 100px;
+        max-width: 100px;
+        font-size: 0.72rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .kpi-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    #school-select {
+        min-width: 160px;
+        font-size: 0.82rem;
+    }
+
+    .year-btn {
+        padding: 0.3rem 0.5rem;
+        font-size: 0.72rem;
+    }
+}
+
+/* === Card header with year picker === */
+.card-header-with-picker {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.8rem;
+}
+
+.card-header-with-picker h3 {
+    margin-bottom: 0;
+}
+
+.table-year-picker {
+    display: flex;
+    gap: 0;
+}
+
+.table-year-picker .yr-btn {
+    padding: 0.2rem 0.5rem;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    cursor: pointer;
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--text-light);
+    transition: all 0.15s;
+}
+
+.table-year-picker .yr-btn:first-child { border-radius: 5px 0 0 5px; }
+.table-year-picker .yr-btn:last-child { border-radius: 0 5px 5px 0; }
+.table-year-picker .yr-btn + .yr-btn { border-left: none; }
+
+.table-year-picker .yr-btn:hover {
+    background: #eaf2f8;
+    color: var(--text);
+}
+
+.table-year-picker .yr-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+/* === VA Benchmark explainer === */
+.va-explainer {
+    padding: 1rem 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.va-explainer h4 {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.92rem;
+    color: var(--primary);
+}
+
+.va-explainer p {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.84rem;
+    line-height: 1.55;
+    color: var(--text);
+}
+
+.va-explainer p:last-child {
+    margin-bottom: 0;
+}
+
+.va-explainer .va-highlight {
+    display: inline-block;
+    background: rgba(41, 128, 185, 0.08);
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.va-explainer .va-plus {
+    color: var(--success);
+    font-weight: 700;
+}
+
+.va-explainer .va-minus {
+    color: var(--accent-red);
+    font-weight: 700;
+}
+
+.chart-wide {
+    height: 300px;
+}

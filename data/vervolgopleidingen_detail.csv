@@ -1,0 +1,414 @@
+Type data;tSchool;Jaar;Rang;Bestemmingsinstelling;Aantal;Percentage
+School;01. 13652-20AA-000;2024;1;Universiteit van Amsterdam;18;21
+School;01. 13652-20AA-000;2024;2;Universiteit Leiden;11;13
+School;01. 13652-20AA-000;2024;3;Vrije Universiteit Amsterdam;10;12
+School;01. 13652-20AA-000;2024;4;Rijksuniversiteit Groningen;3;4
+School;01. 13652-20AA-000;2024;5;Technische Universiteit Delft;3;4
+School;01. 13652-20AA-000;2024;6;Universiteit Utrecht;3;4
+School;01. 13652-20AA-000;2024;7;Erasmus Universiteit Rotterdam;3;4
+School;01. 13652-20AA-000;2024;8;Talland College;2;2
+School;01. 13652-20AA-000;2024;9;Hogeschool van Amsterdam;2;2
+School;01. 13652-20AA-000;2024;10;WU;2;2
+School;02. 41208-20CK-000;2024;1;Universiteit Utrecht;23;23
+School;02. 41208-20CK-000;2024;2;Rijksuniversiteit Groningen;9;9
+School;02. 41208-20CK-000;2024;3;Universiteit Leiden;8;8
+School;02. 41208-20CK-000;2024;4;Technische Universiteit Delft;8;8
+School;02. 41208-20CK-000;2024;5;Universiteit van Amsterdam;7;7
+School;02. 41208-20CK-000;2024;6;Radboud Universiteit Nijmegen;6;6
+School;02. 41208-20CK-000;2024;7;Techn. Universiteit Eindhoven;6;6
+School;02. 41208-20CK-000;2024;8;Erasmus Universiteit Rotterdam;4;4
+School;02. 41208-20CK-000;2024;9;Vrije Universiteit Amsterdam;4;4
+School;02. 41208-20CK-000;2024;10;WU;3;3
+School;03. 13556-21AB-000;2024;1;Universiteit van Amsterdam;17;17
+School;03. 13556-21AB-000;2024;2;Universiteit Leiden;8;8
+School;03. 13556-21AB-000;2024;3;Universiteit Utrecht;6;6
+School;03. 13556-21AB-000;2024;4;Technische Universiteit Delft;6;6
+School;03. 13556-21AB-000;2024;5;Vrije Universiteit Amsterdam;4;4
+School;03. 13556-21AB-000;2024;6;Rijksuniversiteit Groningen;1;1
+School;04. 40776-01ET-000;2024;1;Technische Universiteit Delft;14;14
+School;04. 40776-01ET-000;2024;2;Universiteit van Amsterdam;9;9
+School;04. 40776-01ET-000;2024;3;Vrije Universiteit Amsterdam;8;8
+School;04. 40776-01ET-000;2024;4;Universiteit Leiden;7;7
+School;04. 40776-01ET-000;2024;5;Universiteit Utrecht;5;5
+School;04. 40776-01ET-000;2024;6;WU;2;2
+School;04. 40776-01ET-000;2024;7;Universiteit Twente;2;2
+School;04. 40776-01ET-000;2024;8;Universiteit Maastricht;2;2
+School;04. 40776-01ET-000;2024;9;ROC van Amsterdam;1;1
+School;04. 40776-01ET-000;2024;10;Rijksuniversiteit Groningen;1;1
+School;05. 13556-21AF-000;2024;1;Universiteit van Amsterdam;21;17
+School;05. 13556-21AF-000;2024;2;Vrije Universiteit Amsterdam;20;16
+School;05. 13556-21AF-000;2024;3;Universiteit Leiden;16;13
+School;05. 13556-21AF-000;2024;4;Technische Universiteit Delft;6;5
+School;05. 13556-21AF-000;2024;5;Universiteit Utrecht;4;3
+School;05. 13556-21AF-000;2024;6;Hogeschool van Amsterdam;3;2
+School;05. 13556-21AF-000;2024;7;WU;2;2
+School;05. 13556-21AF-000;2024;8;Techn. Universiteit Eindhoven;1;1
+School;05. 13556-21AF-000;2024;9;Universiteit Twente;1;1
+School;05. 13556-21AF-000;2024;10;Radboud Universiteit Nijmegen;1;1
+School;06. 42818-20QU-000;2024;1;Radboud Universiteit Nijmegen;13;17
+School;06. 42818-20QU-000;2024;2;Universiteit Utrecht;9;12
+School;06. 42818-20QU-000;2024;3;Rijksuniversiteit Groningen;9;12
+School;06. 42818-20QU-000;2024;4;Universiteit Twente;5;7
+School;06. 42818-20QU-000;2024;5;Vrije Universiteit Amsterdam;5;7
+School;06. 42818-20QU-000;2024;6;Universiteit Leiden;5;7
+School;06. 42818-20QU-000;2024;7;Technische Universiteit Delft;4;5
+School;06. 42818-20QU-000;2024;8;Erasmus Universiteit Rotterdam;4;5
+School;06. 42818-20QU-000;2024;9;Universiteit van Amsterdam;3;4
+School;06. 42818-20QU-000;2024;10;Chr Hogesch Windesheim;2;3
+School;07. 13554-20RM-000;2024;1;Universiteit Utrecht;17;17
+School;07. 13554-20RM-000;2024;2;Radboud Universiteit Nijmegen;14;14
+School;07. 13554-20RM-000;2024;3;Universiteit Leiden;9;9
+School;07. 13554-20RM-000;2024;4;Rijksuniversiteit Groningen;9;9
+School;07. 13554-20RM-000;2024;5;WU;4;4
+School;07. 13554-20RM-000;2024;6;Universiteit Twente;4;4
+School;07. 13554-20RM-000;2024;7;Technische Universiteit Delft;3;3
+School;07. 13554-20RM-000;2024;8;Techn. Universiteit Eindhoven;2;2
+School;07. 13554-20RM-000;2024;9;Erasmus Universiteit Rotterdam;2;2
+School;07. 13554-20RM-000;2024;10;Hogeschool Van Hall Larenstein;1;1
+School;08. 41211-02FY-007;2024;1;Tilburg University;13;16
+School;08. 41211-02FY-007;2024;2;Universiteit Leiden;11;13
+School;08. 41211-02FY-007;2024;3;Erasmus Universiteit Rotterdam;9;11
+School;08. 41211-02FY-007;2024;4;Avans Hogeschool;6;7
+School;08. 41211-02FY-007;2024;5;Technische Universiteit Delft;6;7
+School;08. 41211-02FY-007;2024;6;HZ;4;5
+School;08. 41211-02FY-007;2024;7;Techn. Universiteit Eindhoven;3;4
+School;08. 41211-02FY-007;2024;8;WU;3;4
+School;08. 41211-02FY-007;2024;9;Universiteit Utrecht;3;4
+School;08. 41211-02FY-007;2024;10;Scalda;1;1
+School;09. 42992-03AM-000;2024;1;Universiteit Leiden;18;12
+School;09. 42992-03AM-000;2024;2;Erasmus Universiteit Rotterdam;14;10
+School;09. 42992-03AM-000;2024;3;Tilburg University;11;8
+School;09. 42992-03AM-000;2024;4;Universiteit Utrecht;9;6
+School;09. 42992-03AM-000;2024;5;Radboud Universiteit Nijmegen;7;5
+School;09. 42992-03AM-000;2024;6;Techn. Universiteit Eindhoven;6;4
+School;09. 42992-03AM-000;2024;7;Technische Universiteit Delft;6;4
+School;09. 42992-03AM-000;2024;8;Universiteit Maastricht;5;3
+School;09. 42992-03AM-000;2024;9;WU;4;3
+School;09. 42992-03AM-000;2024;10;Universiteit van Amsterdam;4;3
+School;10. 40856-02QP-000;2024;1;Tilburg University;15;33
+School;10. 40856-02QP-000;2024;2;Radboud Universiteit Nijmegen;8;17
+School;10. 40856-02QP-000;2024;3;Universiteit Maastricht;5;11
+School;10. 40856-02QP-000;2024;4;Techn. Universiteit Eindhoven;3;7
+School;10. 40856-02QP-000;2024;5;Technische Universiteit Delft;1;2
+School;10. 40856-02QP-000;2024;6;De Kempel;1;2
+School;10. 40856-02QP-000;2024;7;Avans Hogeschool;1;2
+School;10. 40856-02QP-000;2024;8;Breda Univ of Applied Sciences;1;2
+School;10. 40856-02QP-000;2024;9;Fontys Hogeschool;1;2
+School;10. 40856-02QP-000;2024;10;Hogesch van Arnhem en Nijmegen;1;2
+School;11. 41513-20KZ-000;2024;1;Erasmus Universiteit Rotterdam;18;21
+School;11. 41513-20KZ-000;2024;2;Universiteit Leiden;18;21
+School;11. 41513-20KZ-000;2024;3;Technische Universiteit Delft;8;10
+School;11. 41513-20KZ-000;2024;4;Tilburg University;7;8
+School;11. 41513-20KZ-000;2024;5;WU;4;5
+School;11. 41513-20KZ-000;2024;6;Vrije Universiteit Amsterdam;4;5
+School;11. 41513-20KZ-000;2024;7;Universiteit van Amsterdam;2;2
+School;11. 41513-20KZ-000;2024;8;Techn. Universiteit Eindhoven;2;2
+School;11. 41513-20KZ-000;2024;9;Universiteit Utrecht;1;1
+School;11. 41513-20KZ-000;2024;10;Rijksuniversiteit Groningen;1;1
+School;13. 41386-19ZU-000;2024;1;Erasmus Universiteit Rotterdam;21;23
+School;13. 41386-19ZU-000;2024;2;Universiteit Utrecht;20;22
+School;13. 41386-19ZU-000;2024;3;Technische Universiteit Delft;8;9
+School;13. 41386-19ZU-000;2024;4;Radboud Universiteit Nijmegen;5;5
+School;13. 41386-19ZU-000;2024;5;Rijksuniversiteit Groningen;3;3
+School;13. 41386-19ZU-000;2024;6;Hogesch van Arnhem en Nijmegen;2;2
+School;13. 41386-19ZU-000;2024;7;WU;2;2
+School;13. 41386-19ZU-000;2024;8;Hogeschool Rotterdam;2;2
+School;13. 41386-19ZU-000;2024;9;Universiteit Leiden;2;2
+School;13. 41386-19ZU-000;2024;10;Hogeschool Utrecht;2;2
+School;14. 41525-20AI-000;2024;1;Erasmus Universiteit Rotterdam;23;20
+School;14. 41525-20AI-000;2024;2;Universiteit Utrecht;20;18
+School;14. 41525-20AI-000;2024;3;Universiteit Leiden;17;15
+School;14. 41525-20AI-000;2024;4;Technische Universiteit Delft;16;14
+School;14. 41525-20AI-000;2024;5;Vrije Universiteit Amsterdam;4;4
+School;14. 41525-20AI-000;2024;6;WU;2;2
+School;14. 41525-20AI-000;2024;7;Rijksuniversiteit Groningen;2;2
+School;14. 41525-20AI-000;2024;8;Universiteit van Amsterdam;2;2
+School;14. 41525-20AI-000;2024;9;Universiteit Twente;2;2
+School;14. 41525-20AI-000;2024;10;Hogeschool Utrecht;2;2
+School;15. 41360-20LU-000;2024;1;Universiteit Leiden;22;21
+School;15. 41360-20LU-000;2024;2;Technische Universiteit Delft;20;19
+School;15. 41360-20LU-000;2024;3;Erasmus Universiteit Rotterdam;9;9
+School;15. 41360-20LU-000;2024;4;Universiteit Utrecht;7;7
+School;15. 41360-20LU-000;2024;5;Techn. Universiteit Eindhoven;3;3
+School;15. 41360-20LU-000;2024;6;Vrije Universiteit Amsterdam;3;3
+School;15. 41360-20LU-000;2024;7;Radboud Universiteit Nijmegen;3;3
+School;15. 41360-20LU-000;2024;8;Universiteit Twente;2;2
+School;15. 41360-20LU-000;2024;9;WU;2;2
+School;15. 41360-20LU-000;2024;10;Universiteit van Amsterdam;2;2
+School;16. 33944-02DQ-000;2024;1;Technische Universiteit Delft;17;17
+School;16. 33944-02DQ-000;2024;2;Universiteit Leiden;11;11
+School;16. 33944-02DQ-000;2024;3;Erasmus Universiteit Rotterdam;9;9
+School;16. 33944-02DQ-000;2024;4;Rijksuniversiteit Groningen;6;6
+School;16. 33944-02DQ-000;2024;5;Universiteit Utrecht;6;6
+School;16. 33944-02DQ-000;2024;6;Vrije Universiteit Amsterdam;3;3
+School;16. 33944-02DQ-000;2024;7;Hogeschool Rotterdam;1;1
+School;16. 33944-02DQ-000;2024;8;Hogeschool Leiden;1;1
+School;16. 33944-02DQ-000;2024;9;WU;1;1
+School;16. 33944-02DQ-000;2024;10;Universiteit Twente;1;1
+School;17. 42510-20BV-000;2024;1;Rijksuniversiteit Groningen;59;48
+School;17. 42510-20BV-000;2024;2;Universiteit Utrecht;6;5
+School;17. 42510-20BV-000;2024;3;Technische Universiteit Delft;4;3
+School;17. 42510-20BV-000;2024;4;Hanze;3;2
+School;17. 42510-20BV-000;2024;5;Universiteit Leiden;3;2
+School;17. 42510-20BV-000;2024;6;Hogeschool Van Hall Larenstein;2;2
+School;17. 42510-20BV-000;2024;7;Erasmus Universiteit Rotterdam;2;2
+School;17. 42510-20BV-000;2024;8;Alfa-college;1;1
+School;17. 42510-20BV-000;2024;9;WU;1;1
+School;17. 42510-20BV-000;2024;10;Amsterdamse Hogesch vd Kunsten;1;1
+School;18. 31240-02CR-000;2024;1;Rijksuniversiteit Groningen;45;48
+School;18. 31240-02CR-000;2024;2;Hanze;5;5
+School;18. 31240-02CR-000;2024;3;Universiteit Twente;3;3
+School;18. 31240-02CR-000;2024;4;Radboud Universiteit Nijmegen;2;2
+School;18. 31240-02CR-000;2024;5;Universiteit Utrecht;2;2
+School;18. 31240-02CR-000;2024;6;Alfa-college;1;1
+School;18. 31240-02CR-000;2024;7;Erasmus Universiteit Rotterdam;1;1
+School;18. 31240-02CR-000;2024;8;Universiteit Leiden;1;1
+School;18. 31240-02CR-000;2024;9;Firda;1;1
+School;18. 31240-02CR-000;2024;10;NHL Stenden Hogeschool;1;1
+School;19. 13556-20QY-000;2024;1;Technische Universiteit Delft;15;15
+School;19. 13556-20QY-000;2024;2;Universiteit van Amsterdam;14;14
+School;19. 13556-20QY-000;2024;3;Universiteit Leiden;11;11
+School;19. 13556-20QY-000;2024;4;Rijksuniversiteit Groningen;4;4
+School;19. 13556-20QY-000;2024;5;Erasmus Universiteit Rotterdam;4;4
+School;19. 13556-20QY-000;2024;6;Universiteit Utrecht;4;4
+School;19. 13556-20QY-000;2024;7;Vrije Universiteit Amsterdam;2;2
+School;19. 13556-20QY-000;2024;8;Hogeschool van Amsterdam;1;1
+School;21. 13556-02DW-000;2024;1;Techn. Universiteit Eindhoven;14;20
+School;21. 13556-02DW-000;2024;2;Radboud Universiteit Nijmegen;10;14
+School;21. 13556-02DW-000;2024;3;Tilburg University;7;10
+School;21. 13556-02DW-000;2024;4;Universiteit Utrecht;7;10
+School;21. 13556-02DW-000;2024;5;Fontys Hogeschool;5;7
+School;21. 13556-02DW-000;2024;6;WU;4;6
+School;21. 13556-02DW-000;2024;7;Universiteit Maastricht;3;4
+School;21. 13556-02DW-000;2024;8;Hogesch van Arnhem en Nijmegen;2;3
+School;21. 13556-02DW-000;2024;9;Technische Universiteit Delft;2;3
+School;21. 13556-02DW-000;2024;10;Rijksuniversiteit Groningen;1;1
+School;22. 13556-20AJ-000;2024;1;Radboud Universiteit Nijmegen;17;18
+School;22. 13556-20AJ-000;2024;2;Universiteit Utrecht;13;13
+School;22. 13556-20AJ-000;2024;3;Tilburg University;10;10
+School;22. 13556-20AJ-000;2024;4;Technische Universiteit Delft;7;7
+School;22. 13556-20AJ-000;2024;5;WU;4;4
+School;22. 13556-20AJ-000;2024;6;Universiteit Leiden;4;4
+School;22. 13556-20AJ-000;2024;7;Techn. Universiteit Eindhoven;3;3
+School;22. 13556-20AJ-000;2024;8;Rijksuniversiteit Groningen;3;3
+School;22. 13556-20AJ-000;2024;9;Hogesch van Arnhem en Nijmegen;2;2
+School;22. 13556-20AJ-000;2024;10;Zuyd Hogeschool;2;2
+School;23. 13749-20DD-000;2024;1;Technische Universiteit Delft;14;10
+School;23. 13749-20DD-000;2024;2;Rijksuniversiteit Groningen;12;9
+School;23. 13749-20DD-000;2024;3;Universiteit Utrecht;12;9
+School;23. 13749-20DD-000;2024;4;Erasmus Universiteit Rotterdam;11;8
+School;23. 13749-20DD-000;2024;5;Universiteit Leiden;9;6
+School;23. 13749-20DD-000;2024;6;Universiteit van Amsterdam;9;6
+School;23. 13749-20DD-000;2024;7;Vrije Universiteit Amsterdam;8;6
+School;23. 13749-20DD-000;2024;8;WU;2;1
+School;23. 13749-20DD-000;2024;9;Radboud Universiteit Nijmegen;2;1
+School;23. 13749-20DD-000;2024;10;Hogesch. der Kunsten Den Haag;1;1
+School;25. 41347-14WI-000;2024;1;Rijksuniversiteit Groningen;23;50
+School;25. 41347-14WI-000;2024;2;Universiteit Leiden;5;11
+School;25. 41347-14WI-000;2024;3;NHL Stenden Hogeschool;2;4
+School;25. 41347-14WI-000;2024;4;Universiteit Twente;2;4
+School;25. 41347-14WI-000;2024;5;Hogeschool Van Hall Larenstein;1;2
+School;25. 41347-14WI-000;2024;6;Techn. Universiteit Eindhoven;1;2
+School;25. 41347-14WI-000;2024;7;Amsterdamse Hogesch vd Kunsten;1;2
+School;25. 41347-14WI-000;2024;8;Universiteit van Amsterdam;1;2
+School;25. 41347-14WI-000;2024;9;Firda;1;2
+School;25. 41347-14WI-000;2024;10;Technische Universiteit Delft;1;2
+School;26. 13603-20DL-002;2024;1;Rijksuniversiteit Groningen;57;40
+School;26. 13603-20DL-002;2024;2;Technische Universiteit Delft;5;3
+School;26. 13603-20DL-002;2024;3;Universiteit Utrecht;5;3
+School;26. 13603-20DL-002;2024;4;NHL Stenden Hogeschool;4;3
+School;26. 13603-20DL-002;2024;5;Hanze;4;3
+School;26. 13603-20DL-002;2024;6;Universiteit Leiden;4;3
+School;26. 13603-20DL-002;2024;7;Universiteit van Amsterdam;3;2
+School;26. 13603-20DL-002;2024;8;Techn. Universiteit Eindhoven;3;2
+School;26. 13603-20DL-002;2024;9;WU;2;1
+School;26. 13603-20DL-002;2024;10;Firda;2;1
+School;27. 42505-20DP-000;2024;1;Universiteit Leiden;30;22
+School;27. 42505-20DP-000;2024;2;Universiteit Utrecht;19;14
+School;27. 42505-20DP-000;2024;3;Technische Universiteit Delft;16;12
+School;27. 42505-20DP-000;2024;4;Erasmus Universiteit Rotterdam;10;7
+School;27. 42505-20DP-000;2024;5;Rijksuniversiteit Groningen;5;4
+School;27. 42505-20DP-000;2024;6;Universiteit van Amsterdam;4;3
+School;27. 42505-20DP-000;2024;7;Hogeschool Leiden;3;2
+School;27. 42505-20DP-000;2024;8;Vrije Universiteit Amsterdam;2;1
+School;27. 42505-20DP-000;2024;9;Hs vd Kunsten Utrecht;1;1
+School;27. 42505-20DP-000;2024;10;WU;1;1
+School;27. 42505-30GD-000;2024;1;Universiteit Leiden;33;23
+School;27. 42505-30GD-000;2024;2;Universiteit Utrecht;21;15
+School;27. 42505-30GD-000;2024;3;Vrije Universiteit Amsterdam;11;8
+School;27. 42505-30GD-000;2024;4;Technische Universiteit Delft;9;6
+School;27. 42505-30GD-000;2024;5;Universiteit van Amsterdam;7;5
+School;27. 42505-30GD-000;2024;6;Erasmus Universiteit Rotterdam;4;3
+School;27. 42505-30GD-000;2024;7;De Haagse Hogeschool;2;1
+School;27. 42505-30GD-000;2024;8;Hogeschool Utrecht;1;1
+School;27. 42505-30GD-000;2024;9;WU;1;1
+School;27. 42505-30GD-000;2024;10;Techn. Universiteit Eindhoven;1;1
+School;28. 41211-17JY-000;2024;1;Radboud Universiteit Nijmegen;13;13
+School;28. 41211-17JY-000;2024;2;Universiteit Utrecht;11;11
+School;28. 41211-17JY-000;2024;3;Tilburg University;10;10
+School;28. 41211-17JY-000;2024;4;Techn. Universiteit Eindhoven;7;7
+School;28. 41211-17JY-000;2024;5;Technische Universiteit Delft;6;6
+School;28. 41211-17JY-000;2024;6;Avans Hogeschool;6;6
+School;28. 41211-17JY-000;2024;7;Fontys Hogeschool;5;5
+School;28. 41211-17JY-000;2024;8;Universiteit Maastricht;4;4
+School;28. 41211-17JY-000;2024;9;Universiteit van Amsterdam;2;2
+School;28. 41211-17JY-000;2024;10;WU;2;2
+School;29. 41285-20CI-000;2024;1;Radboud Universiteit Nijmegen;50;33
+School;29. 41285-20CI-000;2024;2;Universiteit Utrecht;13;9
+School;29. 41285-20CI-000;2024;3;Rijksuniversiteit Groningen;9;6
+School;29. 41285-20CI-000;2024;4;Tilburg University;8;5
+School;29. 41285-20CI-000;2024;5;Universiteit Leiden;8;5
+School;29. 41285-20CI-000;2024;6;Technische Universiteit Delft;7;5
+School;29. 41285-20CI-000;2024;7;Erasmus Universiteit Rotterdam;4;3
+School;29. 41285-20CI-000;2024;8;WU;4;3
+School;29. 41285-20CI-000;2024;9;Universiteit Maastricht;4;3
+School;29. 41285-20CI-000;2024;10;Techn. Universiteit Eindhoven;3;2
+School;30. 42992-02QO-000;2024;1;Universiteit Utrecht;18;16
+School;30. 42992-02QO-000;2024;2;Tilburg University;18;16
+School;30. 42992-02QO-000;2024;3;Erasmus Universiteit Rotterdam;16;14
+School;30. 42992-02QO-000;2024;4;Technische Universiteit Delft;8;7
+School;30. 42992-02QO-000;2024;5;Radboud Universiteit Nijmegen;6;5
+School;30. 42992-02QO-000;2024;6;WU;6;5
+School;30. 42992-02QO-000;2024;7;Universiteit Leiden;6;5
+School;30. 42992-02QO-000;2024;8;Techn. Universiteit Eindhoven;4;3
+School;30. 42992-02QO-000;2024;9;Avans Hogeschool;4;3
+School;30. 42992-02QO-000;2024;10;Breda Univ of Applied Sciences;2;2
+School;31. 41775-15SC-000;2024;1;Technische Universiteit Delft;37;25
+School;31. 41775-15SC-000;2024;2;Erasmus Universiteit Rotterdam;28;19
+School;31. 41775-15SC-000;2024;3;Universiteit Leiden;18;12
+School;31. 41775-15SC-000;2024;4;Universiteit Utrecht;16;11
+School;31. 41775-15SC-000;2024;5;Universiteit van Amsterdam;6;4
+School;31. 41775-15SC-000;2024;6;Rijksuniversiteit Groningen;4;3
+School;31. 41775-15SC-000;2024;7;Vrije Universiteit Amsterdam;3;2
+School;31. 41775-15SC-000;2024;8;Techn. Universiteit Eindhoven;1;1
+School;31. 41775-15SC-000;2024;9;Hogeschool Utrecht;1;1
+School;31. 41775-15SC-000;2024;10;Hogeschool Rotterdam;1;1
+School;32. 20151-14QT-000;2024;1;Universiteit Leiden;15;21
+School;32. 20151-14QT-000;2024;2;Technische Universiteit Delft;13;18
+School;32. 20151-14QT-000;2024;3;Erasmus Universiteit Rotterdam;12;16
+School;32. 20151-14QT-000;2024;4;Universiteit Utrecht;4;5
+School;32. 20151-14QT-000;2024;5;Techn. Universiteit Eindhoven;2;3
+School;32. 20151-14QT-000;2024;6;Fontys Hogeschool;1;1
+School;32. 20151-14QT-000;2024;7;De Haagse Hogeschool;1;1
+School;32. 20151-14QT-000;2024;8;Vrije Universiteit Amsterdam;1;1
+School;32. 20151-14QT-000;2024;9;WU;1;1
+School;32. 20151-14QT-000;2024;10;Rijksuniversiteit Groningen;1;1
+School;33. 41568-20DC-000;2024;1;Erasmus Universiteit Rotterdam;19;30
+School;33. 41568-20DC-000;2024;2;Universiteit Leiden;9;14
+School;33. 41568-20DC-000;2024;3;Technische Universiteit Delft;7;11
+School;33. 41568-20DC-000;2024;4;Universiteit van Amsterdam;3;5
+School;33. 41568-20DC-000;2024;5;Universiteit Utrecht;3;5
+School;33. 41568-20DC-000;2024;6;WU;2;3
+School;33. 41568-20DC-000;2024;7;Hogeschool Rotterdam;2;3
+School;33. 41568-20DC-000;2024;8;Vrije Universiteit Amsterdam;2;3
+School;33. 41568-20DC-000;2024;9;Zadkine;2;3
+School;33. 41568-20DC-000;2024;10;HMC;1;2
+School;34. 40996-04DS-000;2024;1;Techn. Universiteit Eindhoven;13;27
+School;34. 40996-04DS-000;2024;2;Universiteit Maastricht;12;24
+School;34. 40996-04DS-000;2024;3;Radboud Universiteit Nijmegen;5;10
+School;34. 40996-04DS-000;2024;4;Universiteit Utrecht;4;8
+School;34. 40996-04DS-000;2024;5;Tilburg University;3;6
+School;34. 40996-04DS-000;2024;6;Technische Universiteit Delft;2;4
+School;34. 40996-04DS-000;2024;7;HMC;1;2
+School;34. 40996-04DS-000;2024;8;WU;1;2
+School;34. 40996-04DS-000;2024;9;Vrije Universiteit Amsterdam;1;2
+School;35. 40094-16PA-000;2024;1;Universiteit Utrecht;24;18
+School;35. 40094-16PA-000;2024;2;Universiteit Leiden;10;7
+School;35. 40094-16PA-000;2024;3;Erasmus Universiteit Rotterdam;10;7
+School;35. 40094-16PA-000;2024;4;Universiteit van Amsterdam;9;7
+School;35. 40094-16PA-000;2024;5;Technische Universiteit Delft;8;6
+School;35. 40094-16PA-000;2024;6;Vrije Universiteit Amsterdam;7;5
+School;35. 40094-16PA-000;2024;7;Radboud Universiteit Nijmegen;6;4
+School;35. 40094-16PA-000;2024;8;Rijksuniversiteit Groningen;6;4
+School;35. 40094-16PA-000;2024;9;Universiteit Twente;3;2
+School;35. 40094-16PA-000;2024;10;Universiteit Maastricht;2;1
+School;36. 41475-15JM-000;2024;1;Universiteit Utrecht;24;14
+School;36. 41475-15JM-000;2024;2;Technische Universiteit Delft;14;8
+School;36. 41475-15JM-000;2024;3;Universiteit Leiden;14;8
+School;36. 41475-15JM-000;2024;4;Erasmus Universiteit Rotterdam;13;8
+School;36. 41475-15JM-000;2024;5;Rijksuniversiteit Groningen;11;7
+School;36. 41475-15JM-000;2024;6;Techn. Universiteit Eindhoven;8;5
+School;36. 41475-15JM-000;2024;7;Universiteit van Amsterdam;8;5
+School;36. 41475-15JM-000;2024;8;Vrije Universiteit Amsterdam;6;4
+School;36. 41475-15JM-000;2024;9;Radboud Universiteit Nijmegen;6;4
+School;36. 41475-15JM-000;2024;10;WU;2;1
+School;37. 13556-20DG-000;2024;1;Universiteit Leiden;13;20
+School;37. 13556-20DG-000;2024;2;Universiteit van Amsterdam;9;14
+School;37. 13556-20DG-000;2024;3;Vrije Universiteit Amsterdam;5;8
+School;37. 13556-20DG-000;2024;4;Technische Universiteit Delft;5;8
+School;37. 13556-20DG-000;2024;5;Techn. Universiteit Eindhoven;4;6
+School;37. 13556-20DG-000;2024;6;Universiteit Utrecht;2;3
+School;37. 13556-20DG-000;2024;7;Universiteit Twente;2;3
+School;37. 13556-20DG-000;2024;8;Hogeschool van Amsterdam;1;2
+School;37. 13556-20DG-000;2024;9;Hogeschool Inholland;1;2
+School;37. 13556-20DG-000;2024;10;Erasmus Universiteit Rotterdam;1;2
+School;38. 42623-20CF-000;2024;1;Rijksuniversiteit Groningen;38;37
+School;38. 42623-20CF-000;2024;2;Radboud Universiteit Nijmegen;12;12
+School;38. 42623-20CF-000;2024;3;Universiteit Utrecht;10;10
+School;38. 42623-20CF-000;2024;4;Universiteit Leiden;5;5
+School;38. 42623-20CF-000;2024;5;Technische Universiteit Delft;5;5
+School;38. 42623-20CF-000;2024;6;Chr Hogesch Windesheim;2;2
+School;38. 42623-20CF-000;2024;7;Hogeschool Viaa;1;1
+School;38. 42623-20CF-000;2024;8;WU;1;1
+School;38. 42623-20CF-000;2024;9;Universiteit Twente;1;1
+School;38. 42623-20CF-000;2024;10;Universiteit Maastricht;1;1
+School;41. 42620-01FP-004;2024;1;Universiteit van Amsterdam;31;29
+School;41. 42620-01FP-004;2024;2;Vrije Universiteit Amsterdam;21;19
+School;41. 42620-01FP-004;2024;3;Technische Universiteit Delft;5;5
+School;41. 42620-01FP-004;2024;4;Universiteit Leiden;4;4
+School;41. 42620-01FP-004;2024;5;Universiteit Twente;4;4
+School;41. 42620-01FP-004;2024;6;Universiteit Utrecht;4;4
+School;41. 42620-01FP-004;2024;7;Hogeschool van Amsterdam;2;2
+School;41. 42620-01FP-004;2024;8;Hogeschool Utrecht;1;1
+School;41. 42620-01FP-004;2024;9;Hogeschool Inholland;1;1
+School;41. 42620-01FP-004;2024;10;Amsterdamse Hogesch vd Kunsten;1;1
+School;42. 40586-30GC-000;2024;1;Universiteit van Amsterdam;25;19
+School;42. 40586-30GC-000;2024;2;Vrije Universiteit Amsterdam;12;9
+School;42. 40586-30GC-000;2024;3;Universiteit Utrecht;7;5
+School;42. 40586-30GC-000;2024;4;Technische Universiteit Delft;6;5
+School;42. 40586-30GC-000;2024;5;Universiteit Leiden;2;2
+School;42. 40586-30GC-000;2024;6;Erasmus Universiteit Rotterdam;2;2
+School;42. 40586-30GC-000;2024;7;Rijksuniversiteit Groningen;1;1
+School;42. 40586-30GC-000;2024;8;Radboud Universiteit Nijmegen;1;1
+School;42. 40586-30GC-000;2024;9;Hanze;1;1
+School;42. 40586-30GC-000;2024;10;ROC van Amsterdam;1;1
+School;43. 42621-14RF-006;2024;1;Universiteit van Amsterdam;36;26
+School;43. 42621-14RF-006;2024;2;Vrije Universiteit Amsterdam;25;18
+School;43. 42621-14RF-006;2024;3;Universiteit Leiden;8;6
+School;43. 42621-14RF-006;2024;4;Rijksuniversiteit Groningen;4;3
+School;43. 42621-14RF-006;2024;5;Technische Universiteit Delft;3;2
+School;43. 42621-14RF-006;2024;6;Universiteit Utrecht;2;1
+School;43. 42621-14RF-006;2024;7;Techn. Universiteit Eindhoven;1;1
+School;43. 42621-14RF-006;2024;8;WU;1;1
+School;43. 42621-14RF-006;2024;9;Tilburg University;1;1
+School;43. 42621-14RF-006;2024;10;Universiteit Twente;1;1
+School;44. 20151-31RY-000;2024;1;Erasmus Universiteit Rotterdam;29;38
+School;44. 20151-31RY-000;2024;2;Universiteit Leiden;11;14
+School;44. 20151-31RY-000;2024;3;Technische Universiteit Delft;9;12
+School;44. 20151-31RY-000;2024;4;Hogeschool Rotterdam;5;7
+School;44. 20151-31RY-000;2024;5;Universiteit Utrecht;3;4
+School;44. 20151-31RY-000;2024;6;Zadkine;2;3
+School;44. 20151-31RY-000;2024;7;Universiteit van Amsterdam;2;3
+School;44. 20151-31RY-000;2024;8;Hogeschool Thomas More;1;1
+School;44. 20151-31RY-000;2024;9;Breda Univ of Applied Sciences;1;1
+School;44. 20151-31RY-000;2024;10;Hogeschool van Amsterdam;1;1
+School;45. 99048-19HV-000;2024;1;Universiteit Maastricht;17;26
+School;45. 99048-19HV-000;2024;2;Zuyd Hogeschool;6;9
+School;45. 99048-19HV-000;2024;3;Techn. Universiteit Eindhoven;5;8
+School;45. 99048-19HV-000;2024;4;Universiteit Utrecht;4;6
+School;45. 99048-19HV-000;2024;5;Tilburg University;3;5
+School;45. 99048-19HV-000;2024;6;Radboud Universiteit Nijmegen;3;5
+School;45. 99048-19HV-000;2024;7;Universiteit Leiden;2;3
+School;45. 99048-19HV-000;2024;8;Fontys Hogeschool;2;3
+School;45. 99048-19HV-000;2024;9;Technische Universiteit Delft;1;2
+School;45. 99048-19HV-000;2024;10;Vrije Universiteit Amsterdam;1;2
+School;46. 41298-02VO-000;2024;1;Technische Universiteit Delft;18;23
+School;46. 41298-02VO-000;2024;2;Universiteit Leiden;13;17
+School;46. 41298-02VO-000;2024;3;Erasmus Universiteit Rotterdam;11;14
+School;46. 41298-02VO-000;2024;4;Universiteit Utrecht;7;9
+School;46. 41298-02VO-000;2024;5;WU;3;4
+School;46. 41298-02VO-000;2024;6;Universiteit van Amsterdam;3;4
+School;46. 41298-02VO-000;2024;7;Techn. Universiteit Eindhoven;2;3
+School;46. 41298-02VO-000;2024;8;Tilburg University;2;3
+School;46. 41298-02VO-000;2024;9;Vrije Universiteit Amsterdam;1;1
+School;46. 41298-02VO-000;2024;10;Universiteit Twente;1;1
