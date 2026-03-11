@@ -218,19 +218,6 @@ function setupEventListeners() {
         }
     });
 
-    // Page-nav "Kaart" link — smooth scroll + invalidate map
-    const pageNavKaart = document.getElementById('page-nav-kaart');
-    if (pageNavKaart) {
-        pageNavKaart.addEventListener('click', (e) => {
-            e.preventDefault();
-            const kaartSection = document.getElementById('kaart');
-            if (kaartSection) {
-                kaartSection.scrollIntoView({ behavior: 'smooth' });
-                // Ensure map renders correctly after scroll
-                setTimeout(() => { if (mapInstance) mapInstance.invalidateSize(); }, 400);
-            }
-        });
-    }
 }
 
 function buildSchoolSelector() {
@@ -267,18 +254,6 @@ function updateScrollSpy() {
         a.classList.toggle('active', a.dataset.section === current);
     });
 
-    // Highlight "Kaart" in page-nav when scrolled to kaart section
-    const pageNavKaart = document.getElementById('page-nav-kaart');
-    const pageNavSchool = document.querySelector('#page-nav a[href="index.html"]');
-    if (pageNavKaart && pageNavSchool) {
-        if (current === 'kaart') {
-            pageNavKaart.classList.add('active');
-            pageNavSchool.classList.remove('active');
-        } else {
-            pageNavKaart.classList.remove('active');
-            pageNavSchool.classList.add('active');
-        }
-    }
 }
 
 // ===================== CHART MANAGEMENT =====================

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHZG Scholenkaart</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="compare.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/topojson-client@3/dist/topojson-client.min.js"></script>
+    <link rel="stylesheet" href="auth.css">
+    <script src="auth.js"></script>
+</head>
+<body>
+    <header>
+        <h1>SHZG Dashboard</h1>
+        <p class="subtitle">Stichting het Zelfstandig Gymnasium</p>
+    </header>
+
+    <!-- Page navigation -->
+    <nav id="page-nav">
+        <a href="index.html">Schoolprofiel</a>
+        <a href="compare.html">Vergelijken</a>
+        <a href="kaart.html" class="active">Kaart</a>
+    </nav>
+
+    <!-- Sticky controls -->
+    <div id="controls">
+        <div class="control-group">
+            <label for="school-select">School:</label>
+            <select id="school-select"></select>
+        </div>
+    </div>
+
+    <!-- Loading indicator -->
+    <div id="loading" class="loading-overlay">
+        <div class="spinner"></div>
+        <p>Kaart laden...</p>
+    </div>
+
+    <!-- Map content -->
+    <div id="kaart-page" class="hidden">
+        <div class="kaart-page-wrapper">
+            <div id="map-container"></div>
+            <div class="map-controls">
+                <button id="map-zoom-btn" class="map-zoom-btn">Zoom naar school</button>
+                <button id="map-heatmap-btn" class="map-zoom-btn">Toon leerlingherkomst</button>
+                <button id="map-allschools-btn" class="map-zoom-btn">Alle scholen</button>
+            </div>
+            <div id="map-legend" class="map-legend" style="display:none">
+                <span class="map-legend-title">Aantal leerlingen uit PC4-gebied</span>
+                <div class="map-legend-bar"></div>
+                <div class="map-legend-labels"><span>0</span><span id="map-legend-max">50+</span></div>
+            </div>
+            <div id="map-allschools-legend" class="map-allschools-legend" style="display:none"></div>
+            <p class="map-source-note" id="map-source-note" style="display:none">Herkomstgegevens: actuele stand (bron: Scholen op de Kaart). Waarden &lt;5 zijn geschat.</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>SHZG Schoolprofiel Dashboard &mdash; Scholenkaart</p>
+    </footer>
+
+    <script src="kaart.js"></script>
+</body>
+</html>

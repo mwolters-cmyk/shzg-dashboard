@@ -7,9 +7,6 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="compare.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://unpkg.com/topojson-client@3/dist/topojson-client.min.js"></script>
     <link rel="stylesheet" href="auth.css">
     <script src="auth.js"></script>
 </head>
@@ -23,7 +20,7 @@
     <nav id="page-nav">
         <a href="index.html" class="active">Schoolprofiel</a>
         <a href="compare.html">Vergelijken</a>
-        <a href="#kaart" id="page-nav-kaart">Kaart</a>
+        <a href="kaart.html">Kaart</a>
     </nav>
 
     <!-- Sticky controls -->
@@ -224,26 +221,6 @@
                 <div class="chart-card">
                     <h3>Positie binnen SHZG</h3>
                     <div id="benchmark-strips"></div>
-                </div>
-            </section>
-
-            <!-- Section 10: Scholenkaart -->
-            <section id="kaart" class="dashboard-section">
-                <h2>Scholenkaart</h2>
-                <div class="chart-card">
-                    <div id="map-container"></div>
-                    <div class="map-controls">
-                        <button id="map-zoom-btn" class="map-zoom-btn">Zoom naar school</button>
-                        <button id="map-heatmap-btn" class="map-zoom-btn">Toon leerlingherkomst</button>
-                        <button id="map-allschools-btn" class="map-zoom-btn">Alle scholen</button>
-                    </div>
-                    <div id="map-legend" class="map-legend" style="display:none">
-                        <span class="map-legend-title">Aantal leerlingen uit PC4-gebied</span>
-                        <div class="map-legend-bar"></div>
-                        <div class="map-legend-labels"><span>0</span><span id="map-legend-max">50+</span></div>
-                    </div>
-                    <div id="map-allschools-legend" class="map-allschools-legend" style="display:none"></div>
-                    <p class="map-source-note" id="map-source-note" style="display:none">Herkomstgegevens: actuele stand (bron: Scholen op de Kaart). Waarden &lt;5 zijn geschat.</p>
                 </div>
             </section>
 
