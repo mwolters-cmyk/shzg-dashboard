@@ -43,6 +43,13 @@ const METRIC_GROUPS = [
         ],
     },
     {
+        section: 'gender',
+        gridId: 'grid-gender',
+        metrics: [
+            { field: 'pct_meisjes', label: '% Meisjes', decimals: 1, suffix: '%' },
+        ],
+    },
+    {
         section: 'tevredenheid',
         gridId: 'grid-tevredenheid',
         metrics: [

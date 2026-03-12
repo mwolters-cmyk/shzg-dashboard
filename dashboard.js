@@ -23,6 +23,7 @@ const CSV_FILES = {
     aantal_leerlingen: 'aantal_leerlingen.csv',
     va_school: 'va_school.csv',
     va_vakgroep: 'va_vakgroep.csv',
+    slaag_gender: 'slaag_gender.csv',
 };
 
 const COLORS = {
@@ -456,6 +457,7 @@ function renderDashboard() {
     renderProfiel();
     renderExamens();
     renderLeerlingen();
+    renderGender();
     renderTevredenheid();
     renderVervolg();
     renderContext();
@@ -692,6 +694,146 @@ function renderLeerlingen() {
         ]);
     } else {
         noData('leerlingen-strips');
+    }
+}
+
+// ===================== SECTION 3b: GENDER =====================
+function renderGender() {
+    const row = getPanelRow(selectedSchool, selectedYear);
+    const prevRow = getPanelRow(selectedSchool, prevYear(selectedYear));
+
+    // --- KPIs ---
+    const pctM = row ? num(row.pct_meisjes) : null;
+    const prevPctM = prevRow ? num(prevRow.pct_meisjes) : null;
+
+    // Get slaagpercentage for this school+year from slaag_gender, aggregated across profiles
+    const sgRows = (data.slaag_gender || []).filter(r =>
+        r.tSchool === selectedSchool && r.Schooljaar === selectedYear
+    );
+    let slaagMan = null, slaagVrouw = null;
+    const manRows = sgRows.filter(r => r.Geslacht === 'Man');
+    const vrouwRows = sgRows.filter(r => r.Geslacht === 'Vrouw');
+    const sumKand = (rows) => rows.reduce((s, r) => s + (parseInt(r.Examenkandidaten) || 0), 0);
+    const sumGesl = (rows) => rows.reduce((s, r) => s + (parseInt(r.Geslaagden) || 0), 0);
+    const mKand = sumKand(manRows), mGesl = sumGesl(manRows);
+    const vKand = sumKand(vrouwRows), vGesl = sumGesl(vrouwRows);
+    if (mKand > 0) slaagMan = mGesl / mKand * 100;
+    if (vKand > 0) slaagVrouw = vGesl / vKand * 100;
+
+    renderKPI('gender-kpis', [
+        { value: pctM !== null ? formatPct(pctM) : '—', label: '% meisjes', trend: pctM !== null && prevPctM !== null ? pctM - prevPctM : null },
+        { value: slaagMan !== null ? formatPct(slaagMan) : '—', label: 'Slaag% jongens' },
+        { value: slaagVrouw !== null ? formatPct(slaagVrouw) : '—', label: 'Slaag% meisjes' },
+    ]);
+
+    // --- Chart 1: Stacked bar — jongens/meisjes per leerjaar ---
+    const llRows = (data.aantal_leerlingen || []).filter(r =>
+        r.tSchool === selectedSchool && r.Schooljaar === selectedYear && r['Type data'] === 'School'
+    );
+
+    const leerjaren = ['1', '2', '3', '4', '5', '6'];
+    const manPerLj = leerjaren.map(lj =>
+        llRows.filter(r => r.Leerjaar === lj && r.Geslacht === 'Man')
+              .reduce((s, r) => s + (parseInt(r['Aantal leerlingen']) || 0), 0)
+    );
+    const vrouwPerLj = leerjaren.map(lj =>
+        llRows.filter(r => r.Leerjaar === lj && r.Geslacht === 'Vrouw')
+              .reduce((s, r) => s + (parseInt(r['Aantal leerlingen']) || 0), 0)
+    );
+
+    const ctxVerd = document.getElementById('chart-gender-verdeling');
+    if (ctxVerd) {
+        const c = new Chart(ctxVerd, {
+            type: 'bar',
+            data: {
+                labels: leerjaren.map(l => 'Lj ' + l),
+                datasets: [
+                    { label: 'Jongens', data: manPerLj, backgroundColor: COLORS.primary, borderRadius: 3 },
+                    { label: 'Meisjes', data: vrouwPerLj, backgroundColor: COLORS.accent, borderRadius: 3 },
+                ],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: true, position: 'top', labels: { font: { size: 10 }, boxWidth: 12 } },
+                    tooltip: {
+                        callbacks: {
+                            afterBody: (items) => {
+                                const i = items[0].dataIndex;
+                                const total = manPerLj[i] + vrouwPerLj[i];
+                                if (total === 0) return '';
+                                return `${Math.round(vrouwPerLj[i] / total * 100)}% meisjes`;
+                            }
+                        }
+                    },
+                },
+                scales: {
+                    x: { stacked: true, ticks: { font: { size: 11 } } },
+                    y: { stacked: true, ticks: { font: { size: 11 } }, title: { display: true, text: 'Aantal leerlingen', font: { size: 11 } } },
+                },
+            },
+        });
+        charts['chart-gender-verdeling'] = c;
+    }
+
+    // --- Chart 2: Grouped bar — slaagpercentage per profiel, jongens vs meisjes ---
+    const MAIN_PROFIELEN = ['N&T', 'N&G', 'E&M', 'C&M', 'N&T/N&G', 'E&M/C&M'];
+    const sgSchool = (data.slaag_gender || []).filter(r =>
+        r.tSchool === selectedSchool && r.Schooljaar === selectedYear
+    );
+
+    const profLabels = [];
+    const profSlaagMan = [];
+    const profSlaagVrouw = [];
+    MAIN_PROFIELEN.forEach(prof => {
+        const mRow = sgSchool.find(r => r.Profiel === prof && r.Geslacht === 'Man');
+        const vRow = sgSchool.find(r => r.Profiel === prof && r.Geslacht === 'Vrouw');
+        const mK = mRow ? parseInt(mRow.Examenkandidaten) || 0 : 0;
+        const vK = vRow ? parseInt(vRow.Examenkandidaten) || 0 : 0;
+        if (mK === 0 && vK === 0) return; // skip profiles this school doesn't have
+        profLabels.push(prof);
+        profSlaagMan.push(mK > 0 ? parseFloat(mRow.Slaagpercentage.replace(',', '.')) || null : null);
+        profSlaagVrouw.push(vK > 0 ? parseFloat(vRow.Slaagpercentage.replace(',', '.')) || null : null);
+    });
+
+    const ctxSlaag = document.getElementById('chart-gender-slaag');
+    if (ctxSlaag && profLabels.length > 0) {
+        const c = new Chart(ctxSlaag, {
+            type: 'bar',
+            data: {
+                labels: profLabels,
+                datasets: [
+                    { label: 'Jongens', data: profSlaagMan, backgroundColor: COLORS.primary, borderRadius: 3 },
+                    { label: 'Meisjes', data: profSlaagVrouw, backgroundColor: COLORS.accent, borderRadius: 3 },
+                ],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: true, position: 'top', labels: { font: { size: 10 }, boxWidth: 12 } },
+                    tooltip: { callbacks: { label: (item) => item.dataset.label + ': ' + (item.raw !== null ? formatPct(item.raw) : 'n.v.t.') } },
+                },
+                scales: {
+                    x: { ticks: { font: { size: 11 } } },
+                    y: { min: 50, max: 100, ticks: { font: { size: 11 }, callback: v => v + '%' }, title: { display: true, text: 'Slaagpercentage', font: { size: 11 } } },
+                },
+            },
+        });
+        charts['chart-gender-slaag'] = c;
+    } else if (ctxSlaag) {
+        noData('chart-gender-slaag', 'Geen slaagdata per geslacht beschikbaar');
+    }
+
+    // --- Distribution strip ---
+    const dist = getDistribution('pct_meisjes', selectedYear);
+    if (pctM !== null && dist) {
+        renderDistributionStrips('gender-strips', [
+            { label: '% meisjes', value: pctM, dist: dist, decimals: 1, fmt: formatPct(pctM) },
+        ]);
+    } else {
+        noData('gender-strips');
     }
 }
 
