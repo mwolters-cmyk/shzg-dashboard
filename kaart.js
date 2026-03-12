@@ -805,13 +805,7 @@ async function toggleMarktaandeel() {
                 if (info) {
                     const pctOverig = (100 - info.pct_shzg).toFixed(1);
 
-                    // Light hover tooltip — just PC4 + percentage
-                    layer.bindTooltip(
-                        `<b>${pc4}</b> — SHZG ${info.pct_shzg}%`,
-                        { sticky: true, className: 'map-label' }
-                    );
-
-                    // Click popup — full school breakdown
+                    // Click popup only — no hover tooltip
                     let popup = `<div class="marktaandeel-popup"><b>PC4 ${pc4}</b><br>` +
                         `<span style="color:#1a5276;font-weight:600">SHZG: ${info.shzg} lln (${info.pct_shzg}%)</span><br>` +
                         `<span style="color:#a93226">Overig: ${info.overig} lln (${pctOverig}%)</span>`;
