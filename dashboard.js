@@ -1204,7 +1204,7 @@ function renderBenchmark() {
             Het <span class="va-highlight">verwachte CE-cijfer</span> is wat een
             gemiddelde school zou scoren onder dezelfde omstandigheden. Het verschil
             tussen werkelijk en verwacht cijfer is de
-            <span class="va-highlight">toegevoegde waarde</span>:
+            <span class="va-highlight">eerlijke benchmark</span>:
             een <span class="va-plus">positieve</span> waarde betekent dat de school
             beter presteert dan verwacht, een <span class="va-minus">negatieve</span>
             waarde slechter.</p>
@@ -1222,7 +1222,7 @@ function renderBenchmark() {
     const vakRows = getVAVakgroepRows(selectedSchool);
 
     if (vaRows.length === 0) {
-        noData('benchmark-kpis', 'Geen TW-data beschikbaar voor deze school');
+        noData('benchmark-kpis', 'Geen EB-data beschikbaar voor deze school');
         return;
     }
 
@@ -1241,7 +1241,7 @@ function renderBenchmark() {
     renderKPI('benchmark-kpis', [
         {
             value: vaVal !== null ? (vaVal >= 0 ? '+' : '') + formatNum(vaVal, 3) : '—',
-            label: 'Toegevoegde waarde ' + selectedYear,
+            label: 'Eerlijke Benchmark ' + selectedYear,
             trend: vaVal !== null && prevVaVal !== null ? vaVal - prevVaVal : null,
         },
         {
@@ -1254,7 +1254,7 @@ function renderBenchmark() {
         },
         {
             value: avgVA !== null ? (avgVA >= 0 ? '+' : '') + formatNum(avgVA, 3) : '—',
-            label: 'Gem. TW (alle jaren)',
+            label: 'Gem. EB (alle jaren)',
         },
     ]);
 
@@ -1310,7 +1310,7 @@ function renderBenchmark() {
             data: {
                 labels: SCHOOL_YEARS,
                 datasets: [{
-                    label: 'Toegevoegde waarde',
+                    label: 'Eerlijke Benchmark',
                     data: vaVals,
                     backgroundColor: vaColors,
                     borderColor: vaBorders,
@@ -1328,7 +1328,7 @@ function renderBenchmark() {
                             label: (item) => {
                                 const v = item.raw;
                                 if (v === null) return 'Geen data';
-                                return 'TW: ' + (v >= 0 ? '+' : '') + formatNum(v, 3);
+                                return 'EB: ' + (v >= 0 ? '+' : '') + formatNum(v, 3);
                             }
                         }
                     },
@@ -1337,7 +1337,7 @@ function renderBenchmark() {
                     y: {
                         beginAtZero: true,
                         ticks: { font: { size: 11 } },
-                        title: { display: true, text: 'Toegevoegde waarde (CE-punten)', font: { size: 11 } },
+                        title: { display: true, text: 'Eerlijke Benchmark (CE-punten)', font: { size: 11 } },
                     },
                     x: { ticks: { font: { size: 11 } } },
                 },
@@ -1381,7 +1381,7 @@ function renderVakgroepProfile(vakRows) {
         data: {
             labels: VAKGROEPEN,
             datasets: [{
-                label: 'Gem. toegevoegde waarde',
+                label: 'Gem. Eerlijke Benchmark',
                 data: schoolAvgVA,
                 backgroundColor: bgColors,
                 borderColor: borderColors,
@@ -1400,7 +1400,7 @@ function renderVakgroepProfile(vakRows) {
                         label: (item) => {
                             const v = item.raw;
                             if (v === null) return 'Geen data';
-                            return 'TW: ' + (v >= 0 ? '+' : '') + formatNum(v, 3);
+                            return 'EB: ' + (v >= 0 ? '+' : '') + formatNum(v, 3);
                         }
                     }
                 },
@@ -1409,7 +1409,7 @@ function renderVakgroepProfile(vakRows) {
                 x: {
                     beginAtZero: true,
                     ticks: { font: { size: 11 } },
-                    title: { display: true, text: 'Toegevoegde waarde (CE-punten)', font: { size: 11 } },
+                    title: { display: true, text: 'Eerlijke Benchmark (CE-punten)', font: { size: 11 } },
                 },
                 y: {
                     ticks: { font: { size: 11, weight: 'bold' } },
@@ -1472,7 +1472,7 @@ function renderVakgroepTrend(vakRows) {
             scales: {
                 y: {
                     ticks: { font: { size: 11 } },
-                    title: { display: true, text: 'TW (CE-punten)', font: { size: 11 } },
+                    title: { display: true, text: 'EB (CE-punten)', font: { size: 11 } },
                 },
                 x: { ticks: { font: { size: 11 } } },
             },
@@ -1516,10 +1516,10 @@ function renderVAStrips(currentVA) {
     };
 
     const items = [
-        { label: 'TW ' + selectedYear, value: currentVA, dist: dist, higherIsBetter: true, decimals: 3 },
+        { label: 'EB ' + selectedYear, value: currentVA, dist: dist, higherIsBetter: true, decimals: 3 },
     ];
     if (avgVA !== null && avgDist.n >= 3) {
-        items.push({ label: 'Gem. TW (alle jaren)', value: avgVA, dist: avgDist, higherIsBetter: true, decimals: 3 });
+        items.push({ label: 'Gem. EB (alle jaren)', value: avgVA, dist: avgDist, higherIsBetter: true, decimals: 3 });
     }
 
     // Add vakgroep strips for latest year
@@ -1545,7 +1545,7 @@ function renderVAStrips(currentVA) {
             avg: vgValues.reduce((s, v) => s + v, 0) / vgValues.length,
             n: vgValues.length,
         };
-        items.push({ label: 'TW ' + vg, value: vgVal, dist: vgDist, higherIsBetter: true, decimals: 3 });
+        items.push({ label: 'EB ' + vg, value: vgVal, dist: vgDist, higherIsBetter: true, decimals: 3 });
     });
 
     renderDistributionStrips('benchmark-strips', items);

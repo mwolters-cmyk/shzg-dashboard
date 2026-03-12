@@ -684,12 +684,12 @@ function renderBenchmarkComparison() {
     const explainerEl = document.getElementById('va-compare-explainer');
     if (explainerEl) {
         explainerEl.innerHTML = `
-            <h4>Eerlijke benchmark: wat is toegevoegde waarde?</h4>
-            <p>De toegevoegde waarde (TW) corrigeert het CE-cijfer voor factoren die de school
+            <h4>Wat is de Eerlijke Benchmark?</h4>
+            <p>De Eerlijke Benchmark (EB) corrigeert het CE-cijfer voor factoren die de school
             niet kan be&iuml;nvloeden: sociaaleconomische achtergrond (SES), stedelijkheid
             en leefbaarheid van het verzorgingsgebied.
-            Een <strong style="color:#27ae60">positieve TW</strong> betekent dat de school
-            beter presteert dan verwacht, een <strong style="color:#e74c3c">negatieve TW</strong> slechter.
+            Een <strong style="color:#27ae60">positieve EB</strong> betekent dat de school
+            beter presteert dan verwacht, een <strong style="color:#e74c3c">negatieve EB</strong> slechter.
             Dezelfde correctie wordt ook per vakgroep toegepast
             (Klassiek, B&egrave;ta, Wiskunde, Talen, Gamma).</p>
         `;
@@ -699,7 +699,7 @@ function renderBenchmarkComparison() {
     const card1 = document.createElement('div');
     card1.className = 'chart-card';
     const canvasId1 = 'cmp-va-school';
-    card1.innerHTML = `<h3>Toegevoegde waarde (school)</h3>
+    card1.innerHTML = `<h3>Eerlijke Benchmark (school)</h3>
         <div class="chart-container"><canvas id="${canvasId1}"></canvas></div>`;
     grid.appendChild(card1);
     renderVASchoolLine(canvasId1);
@@ -718,7 +718,7 @@ function renderBenchmarkComparison() {
         const card = document.createElement('div');
         card.className = 'chart-card';
         const canvasId = `cmp-va-${vg.toLowerCase()}`;
-        card.innerHTML = `<h3>TW ${vg}</h3>
+        card.innerHTML = `<h3>EB ${vg}</h3>
             <div class="chart-container"><canvas id="${canvasId}"></canvas></div>`;
         grid.appendChild(card);
         renderVAVakgroepLine(canvasId, vg);
@@ -786,7 +786,7 @@ function renderVASchoolLine(canvasId) {
             scales: {
                 y: {
                     ticks: { font: { size: 11 } },
-                    title: { display: true, text: 'TW (CE-punten)', font: { size: 11 } },
+                    title: { display: true, text: 'EB (CE-punten)', font: { size: 11 } },
                 },
                 x: { ticks: { font: { size: 11 } } },
             },
@@ -931,7 +931,7 @@ function renderVAVakgroepLine(canvasId, vakgroep) {
             scales: {
                 y: {
                     ticks: { font: { size: 11 } },
-                    title: { display: true, text: 'TW ' + vakgroep, font: { size: 11 } },
+                    title: { display: true, text: 'EB ' + vakgroep, font: { size: 11 } },
                 },
                 x: { ticks: { font: { size: 11 } } },
             },
