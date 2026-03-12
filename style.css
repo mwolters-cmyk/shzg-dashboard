@@ -839,6 +839,11 @@ footer {
     max-width: 280px;
 }
 
+.map-legend-bar.marktaandeel-bar {
+    background: linear-gradient(to right, #1a5276, #7fb3d8, #f0f0f0, #e8a0a0, #c0392b);
+    max-width: 280px;
+}
+
 .map-legend-labels {
     display: flex;
     justify-content: space-between;

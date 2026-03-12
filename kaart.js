@@ -23,6 +23,11 @@ let allSchoolsVisible = false;
 let allSchoolsLayer = null;
 let logoMarkerLayer = null;
 
+// "Marktaandeel" state
+let marktaandeelCache = null;
+let marktaandeelVisible = false;
+let marktaandeelLayer = null;
+
 // ===================== CSV PARSING =====================
 function parseCSV(text, delimiter = ';') {
     const lines = text.split('\n').filter(l => l.trim());
@@ -215,6 +220,12 @@ async function renderKaart() {
         if (allBtn) {
             allBtn.addEventListener('click', () => toggleAllSchools());
         }
+
+        // "Marktaandeel" toggle
+        const maBtn = document.getElementById('map-marktaandeel-btn');
+        if (maBtn) {
+            maBtn.addEventListener('click', () => toggleMarktaandeel());
+        }
     }
 
     // Clear existing markers & labels
@@ -306,6 +317,11 @@ async function renderKaart() {
         mapMarkers.forEach(m => { m.setStyle({ opacity: 0, fillOpacity: 0 }); });
         mapLabels.forEach(l => { if (mapInstance.hasLayer(l)) mapInstance.removeLayer(l); });
         updateLogoMarkers();
+    }
+
+    // In "Marktaandeel" mode, keep circle markers visible
+    if (marktaandeelVisible) {
+        // no-op: markers stay normal
     }
 
     setTimeout(() => { if (mapInstance) mapInstance.invalidateSize(); }, 200);
@@ -689,6 +705,114 @@ async function addLogoMarkers(dominant) {
 function updateLogoMarkers() {
     if (!logoMarkerLayer || !dominantCache || !coordsCache) return;
     addLogoMarkers(dominantCache);
+}
+
+// ===================== "MARKTAANDEEL" SHZG vs OVERIG =====================
+async function loadMarktaandeel() {
+    if (marktaandeelCache) return marktaandeelCache;
+    try {
+        const resp = await fetch(DATA_BASE + 'marktaandeel.json');
+        marktaandeelCache = await resp.json();
+    } catch (e) {
+        marktaandeelCache = null;
+    }
+    return marktaandeelCache;
+}
+
+function getMarktaandeelColor(pctShzg) {
+    // Blue (#1a5276) at 100% SHZG → white (#f0f0f0) at 50% → Red (#c0392b) at 0% SHZG
+    let r, g, b;
+    if (pctShzg >= 50) {
+        // Blue to white: 50-100% SHZG
+        const t = (pctShzg - 50) / 50; // 0=50%, 1=100%
+        r = Math.round(240 - t * (240 - 26));
+        g = Math.round(240 - t * (240 - 82));
+        b = Math.round(240 - t * (240 - 118));
+    } else {
+        // White to red: 0-50% SHZG
+        const t = pctShzg / 50; // 0=0%, 1=50%
+        r = Math.round(192 + t * (240 - 192));
+        g = Math.round(57 + t * (240 - 57));
+        b = Math.round(43 + t * (240 - 43));
+    }
+    const opacity = 0.25 + 0.45 * Math.abs(pctShzg - 50) / 50;
+    return { fillColor: `rgb(${r},${g},${b})`, fillOpacity: opacity };
+}
+
+async function toggleMarktaandeel() {
+    const btn = document.getElementById('map-marktaandeel-btn');
+    const maLegend = document.getElementById('map-marktaandeel-legend');
+    const heatLegend = document.getElementById('map-legend');
+    const heatNote = document.getElementById('map-source-note');
+    const allLegend = document.getElementById('map-allschools-legend');
+
+    if (marktaandeelVisible) {
+        marktaandeelVisible = false;
+        if (btn) { btn.textContent = 'Marktaandeel'; btn.classList.remove('active'); }
+        if (maLegend) maLegend.style.display = 'none';
+        if (heatNote) heatNote.style.display = 'none';
+        if (marktaandeelLayer && mapInstance) mapInstance.removeLayer(marktaandeelLayer);
+        return;
+    }
+
+    // Turn off other modes
+    if (heatmapVisible) await toggleHeatmap();
+    if (allSchoolsVisible) await toggleAllSchools();
+
+    if (btn) { btn.textContent = 'Laden...'; btn.disabled = true; }
+
+    const [ma, topo] = await Promise.all([loadMarktaandeel(), loadPC4Boundaries()]);
+
+    if (!ma || !topo) {
+        if (btn) { btn.textContent = 'Marktaandeel'; btn.disabled = false; }
+        return;
+    }
+
+    marktaandeelVisible = true;
+    if (btn) { btn.textContent = 'Verberg marktaandeel'; btn.disabled = false; btn.classList.add('active'); }
+    if (maLegend) maLegend.style.display = 'block';
+    if (heatLegend) heatLegend.style.display = 'none';
+    if (allLegend) allLegend.style.display = 'none';
+    if (heatNote) { heatNote.textContent = 'Marktaandeel SHZG vs overige VWO-scholen per PC4-gebied (bron: Scholen op de Kaart). Waarden <5 zijn geschat.'; heatNote.style.display = 'block'; }
+
+    if (!marktaandeelLayer) {
+        const objectKey = Object.keys(topo.objects)[0];
+        const geojson = topojson.feature(topo, topo.objects[objectKey]);
+
+        marktaandeelLayer = L.geoJson(geojson, {
+            style: (feature) => {
+                const pc4 = String(feature.properties.postcode);
+                const info = ma[pc4];
+                if (!info) return { fillOpacity: 0, weight: 0.3, color: '#ccc', opacity: 0.2 };
+                const { fillColor, fillOpacity } = getMarktaandeelColor(info.pct_shzg);
+                return { fillColor, fillOpacity, color: '#999', weight: 0.5, opacity: 0.3 };
+            },
+            onEachFeature: (feature, layer) => {
+                const pc4 = String(feature.properties.postcode);
+                const info = ma[pc4];
+                if (info) {
+                    const pctOverig = (100 - info.pct_shzg).toFixed(1);
+                    layer.bindTooltip(
+                        `<b>PC4 ${pc4}</b><br>SHZG: ${info.shzg} lln (${info.pct_shzg}%)<br>Overig: ${info.overig} lln (${pctOverig}%)<br>Totaal: ${info.total}`,
+                        { sticky: true, className: 'map-label' }
+                    );
+                    layer.on({
+                        mouseover: (e) => {
+                            e.target.setStyle({ weight: 2.5, color: '#333', opacity: 0.8 });
+                            e.target.bringToFront();
+                            mapMarkers.forEach(m => m.bringToFront());
+                        },
+                        mouseout: (e) => {
+                            e.target.setStyle({ weight: 0.5, color: '#999', opacity: 0.3 });
+                        },
+                    });
+                }
+            },
+        });
+    }
+
+    marktaandeelLayer.addTo(mapInstance);
+    marktaandeelLayer.bringToBack();
 }
 
 function buildAllSchoolsLegend(dominant) {
