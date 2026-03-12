@@ -319,9 +319,10 @@ async function renderKaart() {
         updateLogoMarkers();
     }
 
-    // In "Marktaandeel" mode, keep circle markers visible
+    // In "Marktaandeel" mode, hide labels and disable hover tooltips on school markers
     if (marktaandeelVisible) {
-        // no-op: markers stay normal
+        mapLabels.forEach(l => { if (mapInstance.hasLayer(l)) mapInstance.removeLayer(l); });
+        mapMarkers.forEach(m => { if (m.getTooltip()) m.unbindTooltip(); });
     }
 
     setTimeout(() => { if (mapInstance) mapInstance.invalidateSize(); }, 200);
@@ -329,6 +330,11 @@ async function renderKaart() {
 
 function updateMapLabels() {
     if (!mapInstance) return;
+    // Hide all labels in marktaandeel or alle-scholen mode
+    if (marktaandeelVisible || allSchoolsVisible) {
+        mapLabels.forEach(l => { if (mapInstance.hasLayer(l)) mapInstance.removeLayer(l); });
+        return;
+    }
     const zoom = mapInstance.getZoom();
     mapLabels.forEach(label => {
         if (label._isSelected) {
