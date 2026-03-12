@@ -50,6 +50,13 @@ const METRIC_GROUPS = [
         ],
     },
     {
+        section: 'profielen',
+        gridId: 'grid-profielen',
+        metrics: [
+            { field: 'pct_natuur', label: '% Natuur (bovenbouw)', decimals: 1, suffix: '%' },
+        ],
+    },
+    {
         section: 'tevredenheid',
         gridId: 'grid-tevredenheid',
         metrics: [

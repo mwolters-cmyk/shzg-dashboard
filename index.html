@@ -46,6 +46,7 @@
             <a href="#examens" data-section="examens">Examens</a>
             <a href="#leerlingen" data-section="leerlingen">Leerlingen</a>
             <a href="#gender" data-section="gender">Gender</a>
+            <a href="#profielen" data-section="profielen">Profielen</a>
             <a href="#tevredenheid" data-section="tevredenheid">Tevredenheid</a>
             <a href="#vervolg" data-section="vervolg">Doorstroom</a>
             <a href="#context" data-section="context">Context</a>
@@ -128,6 +129,30 @@
                 <div class="chart-card">
                     <h3>Positie binnen SHZG</h3>
                     <div id="gender-strips"></div>
+                </div>
+            </section>
+
+            <!-- Section 3c: Profielen -->
+            <section id="profielen" class="dashboard-section">
+                <h2>Profielen</h2>
+                <div class="kpi-grid" id="profielen-kpis"></div>
+                <div class="chart-grid">
+                    <div class="chart-card">
+                        <h3>Verdeling bovenbouw per profiel</h3>
+                        <div class="chart-container"><canvas id="chart-profiel-verdeling"></canvas></div>
+                    </div>
+                    <div class="chart-card">
+                        <h3>CE-cijfer per profiel</h3>
+                        <div class="chart-container"><canvas id="chart-profiel-ce"></canvas></div>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <h3>Slaagpercentage per profiel per jaar</h3>
+                    <div class="chart-container"><canvas id="chart-profiel-slaag-trend"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <h3>Positie binnen SHZG</h3>
+                    <div id="profielen-strips"></div>
                 </div>
             </section>
 

@@ -38,6 +38,38 @@ const COLORS = {
     palette: ['#1a5276','#2980b9','#27ae60','#e67e22','#e74c3c','#8e44ad','#16a085','#d35400'],
 };
 
+// ===================== PROFIEL MAPPINGS =====================
+const PROFIEL_LL_TO_SHORT = {
+    'Natuur en Techniek': 'N&T',
+    'Natuur en Gezondheid': 'N&G',
+    'Economie en Maatschappij': 'E&M',
+    'Cultuur en Maatschappij': 'C&M',
+    'Profielcombinatie NTNG': 'N&T/N&G',
+    'Profielcombinatie EMCM': 'E&M/C&M',
+    'Profielcombinatie NGCM': 'N&G/C&M',
+    'Profielcombinatie NGEM': 'N&G/E&M',
+    'Profielcombinatie NTEM': 'N&T/E&M',
+    'Profielcombinatie NTCM': 'N&T/C&M',
+};
+const PROFIEL_GG_TO_SHORT = {
+    'Natuur en Techniek': 'N&T',
+    'Natuur en Gezondheid': 'N&G',
+    'Economie en Maatschappij': 'E&M',
+    'Cultuur en Maatschappij': 'C&M',
+    'Natuur en Techniek / Natuur en Gezondheid': 'N&T/N&G',
+    'Economie en Maatschappij / Cultuur en Maatschappij': 'E&M/C&M',
+};
+const NATUUR_PROFIELEN_LL = ['Natuur en Techniek', 'Natuur en Gezondheid', 'Profielcombinatie NTNG'];
+const PROFIEL_DISPLAY_ORDER = ['N&T', 'N&G', 'E&M', 'C&M', 'N&T/N&G', 'E&M/C&M'];
+const PROFIEL_COLORS = {
+    'N&T':     '#1a5276',
+    'N&G':     '#2980b9',
+    'E&M':     '#e67e22',
+    'C&M':     '#e74c3c',
+    'N&T/N&G': '#27ae60',
+    'E&M/C&M': '#8e44ad',
+};
+
 // ===================== STATE =====================
 let data = {};              // parsed CSV data
 let schoolList = [];        // [{tSchool, name, city}]
@@ -458,6 +490,7 @@ function renderDashboard() {
     renderExamens();
     renderLeerlingen();
     renderGender();
+    renderProfielen();
     renderTevredenheid();
     renderVervolg();
     renderContext();
@@ -834,6 +867,257 @@ function renderGender() {
         ]);
     } else {
         noData('gender-strips');
+    }
+}
+
+// ===================== SECTION 3c: PROFIELEN =====================
+function renderProfielen() {
+    // --- KPIs: % Natuur, % Maatschappij, Examenkandidaten ---
+    const llRows = (data.aantal_leerlingen || []).filter(r =>
+        r.tSchool === selectedSchool &&
+        r.Schooljaar === selectedYear &&
+        r['Type data'] === 'School' &&
+        r.Bouw === 'Bovenbouw'
+    );
+
+    let totalBovenbouw = 0, totalNatuur = 0;
+    llRows.forEach(r => {
+        const n = parseInt(r['Aantal leerlingen']) || 0;
+        totalBovenbouw += n;
+        if (NATUUR_PROFIELEN_LL.includes(r.Profiel)) totalNatuur += n;
+    });
+
+    const pctNatuur = totalBovenbouw > 0 ? (totalNatuur / totalBovenbouw * 100) : null;
+    const pctMaatschappij = totalBovenbouw > 0 ? ((totalBovenbouw - totalNatuur) / totalBovenbouw * 100) : null;
+
+    // Previous year for trend
+    const prevLlRows = (data.aantal_leerlingen || []).filter(r =>
+        r.tSchool === selectedSchool &&
+        r.Schooljaar === prevYear(selectedYear) &&
+        r['Type data'] === 'School' &&
+        r.Bouw === 'Bovenbouw'
+    );
+    let prevTotal = 0, prevNatuur = 0;
+    prevLlRows.forEach(r => {
+        const n = parseInt(r['Aantal leerlingen']) || 0;
+        prevTotal += n;
+        if (NATUUR_PROFIELEN_LL.includes(r.Profiel)) prevNatuur += n;
+    });
+    const prevPctNatuur = prevTotal > 0 ? (prevNatuur / prevTotal * 100) : null;
+
+    // Examenkandidaten from geslaagden_gezakten Totaal row
+    const ggTotaal = (data.geslaagden || []).find(r =>
+        r.tSchool === selectedSchool &&
+        r.Schooljaar === selectedYear &&
+        r.Profiel === 'Totaal' &&
+        r['Type data'] === 'School'
+    );
+    const examKand = ggTotaal ? parseInt(ggTotaal.Examenkandidaten) || null : null;
+
+    renderKPI('profielen-kpis', [
+        { value: pctNatuur !== null ? formatPct(pctNatuur) : '—', label: '% Natuur (bovenbouw)', trend: pctNatuur !== null && prevPctNatuur !== null ? pctNatuur - prevPctNatuur : null },
+        { value: pctMaatschappij !== null ? formatPct(pctMaatschappij) : '—', label: '% Maatschappij (bovenbouw)' },
+        { value: examKand !== null ? examKand : '—', label: 'Examenkandidaten' },
+    ]);
+
+    // --- Chart 1: Bar — bovenbouw leerlingen per profiel ---
+    const profielCounts = {};
+    llRows.forEach(r => {
+        const short = PROFIEL_LL_TO_SHORT[r.Profiel];
+        if (!short) return;
+        const n = parseInt(r['Aantal leerlingen']) || 0;
+        profielCounts[short] = (profielCounts[short] || 0) + n;
+    });
+
+    const profLabelsVerd = PROFIEL_DISPLAY_ORDER.filter(p => (profielCounts[p] || 0) > 0);
+    const profDataVerd = profLabelsVerd.map(p => profielCounts[p] || 0);
+    const profColorsVerd = profLabelsVerd.map(p => PROFIEL_COLORS[p] || COLORS.grey);
+
+    const ctxVerd = document.getElementById('chart-profiel-verdeling');
+    if (ctxVerd && profLabelsVerd.length > 0) {
+        const c = new Chart(ctxVerd, {
+            type: 'bar',
+            data: {
+                labels: profLabelsVerd,
+                datasets: [{
+                    label: 'Aantal leerlingen',
+                    data: profDataVerd,
+                    backgroundColor: profColorsVerd,
+                    borderRadius: 3,
+                }],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            afterBody: (items) => {
+                                const total = profDataVerd.reduce((s, v) => s + v, 0);
+                                if (total === 0) return '';
+                                return `${Math.round(items[0].raw / total * 100)}% van bovenbouw`;
+                            },
+                        },
+                    },
+                },
+                scales: {
+                    x: { ticks: { font: { size: 11 } } },
+                    y: { ticks: { font: { size: 11 } }, title: { display: true, text: 'Aantal leerlingen', font: { size: 11 } } },
+                },
+            },
+        });
+        charts['chart-profiel-verdeling'] = c;
+    } else if (ctxVerd) {
+        noData('chart-profiel-verdeling', 'Geen profieldata beschikbaar');
+    }
+
+    // --- Chart 2: Grouped bar — CE-cijfer per profiel (school vs SHZG) ---
+    const ggSchool = (data.geslaagden || []).filter(r =>
+        r.tSchool === selectedSchool &&
+        r.Schooljaar === selectedYear &&
+        r['Type data'] === 'School' &&
+        r.Profiel !== 'Totaal'
+    );
+
+    // SHZG weighted average per profiel
+    const ggAll = (data.geslaagden || []).filter(r =>
+        r.Schooljaar === selectedYear &&
+        r['Type data'] === 'School' &&
+        r.Profiel !== 'Totaal'
+    );
+    const shzgCE = {};
+    ggAll.forEach(r => {
+        const short = PROFIEL_GG_TO_SHORT[r.Profiel];
+        if (!short) return;
+        const ce = scaleGrade(r['tCentraal examen']);
+        const kand = parseInt(r.Examenkandidaten) || 0;
+        if (ce === null || kand === 0) return;
+        if (!shzgCE[short]) shzgCE[short] = { sum: 0, n: 0 };
+        shzgCE[short].sum += ce * kand;
+        shzgCE[short].n += kand;
+    });
+
+    const profLabelsCE = [];
+    const schoolCEVals = [];
+    const shzgCEVals = [];
+
+    PROFIEL_DISPLAY_ORDER.forEach(profShort => {
+        const ggRow = ggSchool.find(r => PROFIEL_GG_TO_SHORT[r.Profiel] === profShort);
+        const schoolCE = ggRow ? scaleGrade(ggRow['tCentraal examen']) : null;
+        const shzgAvg = shzgCE[profShort]?.n > 0 ? shzgCE[profShort].sum / shzgCE[profShort].n : null;
+
+        if (schoolCE === null && shzgAvg === null) return;
+        profLabelsCE.push(profShort);
+        schoolCEVals.push(schoolCE);
+        shzgCEVals.push(shzgAvg ? Math.round(shzgAvg * 100) / 100 : null);
+    });
+
+    const ctxCE = document.getElementById('chart-profiel-ce');
+    if (ctxCE && profLabelsCE.length > 0) {
+        const c = new Chart(ctxCE, {
+            type: 'bar',
+            data: {
+                labels: profLabelsCE,
+                datasets: [
+                    { label: 'School', data: schoolCEVals, backgroundColor: COLORS.primary, borderRadius: 3 },
+                    { label: 'SHZG gemiddeld', data: shzgCEVals, backgroundColor: COLORS.grey, borderRadius: 3 },
+                ],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: true, position: 'top', labels: { font: { size: 10 }, boxWidth: 12 } },
+                    tooltip: {
+                        callbacks: {
+                            label: (item) => item.dataset.label + ': ' + (item.raw !== null ? formatNum(item.raw, 2) : 'n.v.t.'),
+                        },
+                    },
+                },
+                scales: {
+                    x: { ticks: { font: { size: 11 } } },
+                    y: { min: 5.5, max: 8.0, ticks: { font: { size: 11 } }, title: { display: true, text: 'CE-cijfer', font: { size: 11 } } },
+                },
+            },
+        });
+        charts['chart-profiel-ce'] = c;
+    } else if (ctxCE) {
+        noData('chart-profiel-ce', 'Geen CE-data per profiel beschikbaar');
+    }
+
+    // --- Chart 3: Line — slaagpercentage per profiel over jaren ---
+    const sgSchool = (data.slaag_gender || []).filter(r => r.tSchool === selectedSchool);
+
+    const profTimeSeries = {};
+    sgSchool.forEach(r => {
+        const prof = r.Profiel;
+        if (!PROFIEL_DISPLAY_ORDER.includes(prof)) return;
+        const year = r.Schooljaar;
+        if (!SCHOOL_YEARS.includes(year)) return;
+        if (!profTimeSeries[prof]) profTimeSeries[prof] = {};
+        if (!profTimeSeries[prof][year]) profTimeSeries[prof][year] = { kand: 0, gesl: 0 };
+        profTimeSeries[prof][year].kand += parseInt(r.Examenkandidaten) || 0;
+        profTimeSeries[prof][year].gesl += parseInt(r.Geslaagden) || 0;
+    });
+
+    const ctxTrend = document.getElementById('chart-profiel-slaag-trend');
+    const trendDatasets = [];
+    PROFIEL_DISPLAY_ORDER.forEach(prof => {
+        const ts = profTimeSeries[prof];
+        if (!ts) return;
+        const yearVals = SCHOOL_YEARS.map(y => {
+            if (ts[y] && ts[y].kand > 0) return ts[y].gesl / ts[y].kand * 100;
+            return null;
+        });
+        if (yearVals.filter(v => v !== null).length < 1) return;
+        trendDatasets.push({
+            label: prof,
+            data: yearVals,
+            borderColor: PROFIEL_COLORS[prof] || COLORS.grey,
+            backgroundColor: 'transparent',
+            borderWidth: 2.5,
+            pointRadius: 4,
+            pointHoverRadius: 6,
+            tension: 0.2,
+            spanGaps: true,
+        });
+    });
+
+    if (ctxTrend && trendDatasets.length > 0) {
+        const c = new Chart(ctxTrend, {
+            type: 'line',
+            data: { labels: SCHOOL_YEARS, datasets: trendDatasets },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: true, position: 'top', labels: { font: { size: 10 }, boxWidth: 12, usePointStyle: true } },
+                    tooltip: {
+                        callbacks: {
+                            label: (item) => item.dataset.label + ': ' + (item.raw !== null ? formatPct(item.raw) : 'n.v.t.'),
+                        },
+                    },
+                },
+                scales: {
+                    x: { ticks: { font: { size: 11 } } },
+                    y: { min: 50, max: 100, ticks: { font: { size: 11 }, callback: v => v + '%' }, title: { display: true, text: 'Slaagpercentage', font: { size: 11 } } },
+                },
+            },
+        });
+        charts['chart-profiel-slaag-trend'] = c;
+    } else if (ctxTrend) {
+        noData('chart-profiel-slaag-trend', 'Geen slaagdata per profiel beschikbaar');
+    }
+
+    // --- Distribution strip: % Natuur ---
+    const dist = getDistribution('pct_natuur', selectedYear);
+    if (pctNatuur !== null && dist && dist.n >= 3) {
+        renderDistributionStrips('profielen-strips', [
+            { label: '% Natuur (bovenbouw)', value: pctNatuur, dist: dist, decimals: 1, fmt: formatPct(pctNatuur), neutral: true },
+        ]);
+    } else {
+        noData('profielen-strips');
     }
 }
 
