@@ -1092,6 +1092,9 @@ function renderProfielen() {
     });
 
     if (ctxTrend && trendDatasets.length > 0) {
+        const allVals = trendDatasets.flatMap(ds => ds.data.filter(v => v !== null));
+        const dataMin = Math.min(...allVals);
+        const yMin = Math.max(0, Math.floor(dataMin / 5) * 5 - 5);
         const c = new Chart(ctxTrend, {
             type: 'line',
             data: { labels: SCHOOL_YEARS, datasets: trendDatasets },
@@ -1108,7 +1111,7 @@ function renderProfielen() {
                 },
                 scales: {
                     x: { ticks: { font: { size: 11 } } },
-                    y: { min: 50, max: 100, ticks: { font: { size: 11 }, callback: v => v + '%' }, title: { display: true, text: 'Slaagpercentage', font: { size: 11 } } },
+                    y: { min: yMin, max: 100, ticks: { font: { size: 11 }, callback: v => v + '%' }, title: { display: true, text: 'Slaagpercentage', font: { size: 11 } } },
                 },
             },
         });
