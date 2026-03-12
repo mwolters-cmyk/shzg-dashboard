@@ -43,17 +43,17 @@ const METRIC_GROUPS = [
         ],
     },
     {
-        section: 'gender',
-        gridId: 'grid-gender',
-        metrics: [
-            { field: 'pct_meisjes', label: '% Meisjes', decimals: 1, suffix: '%' },
-        ],
-    },
-    {
         section: 'profielen',
         gridId: 'grid-profielen',
         metrics: [
             { field: 'pct_natuur', label: '% Natuur (bovenbouw)', decimals: 1, suffix: '%' },
+        ],
+    },
+    {
+        section: 'gender',
+        gridId: 'grid-gender',
+        metrics: [
+            { field: 'pct_meisjes', label: '% Meisjes', decimals: 1, suffix: '%' },
         ],
     },
     {
@@ -388,6 +388,37 @@ function setupEventListeners() {
             toggleSchool(chip.dataset.tschool);
         }
     });
+
+    // Sidebar scroll spy
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            requestAnimationFrame(() => { updateScrollSpy(); ticking = false; });
+            ticking = true;
+        }
+    });
+
+    // Sidebar click: smooth scroll to section
+    document.querySelectorAll('#section-nav a').forEach(a => {
+        a.addEventListener('click', (e) => {
+            e.preventDefault();
+            const target = document.getElementById(a.dataset.section);
+            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    });
+}
+
+function updateScrollSpy() {
+    const sections = document.querySelectorAll('.dashboard-section');
+    const navLinks = document.querySelectorAll('#section-nav a');
+    let current = '';
+    sections.forEach(sec => {
+        const rect = sec.getBoundingClientRect();
+        if (rect.top <= 120) current = sec.id;
+    });
+    navLinks.forEach(a => {
+        a.classList.toggle('active', a.dataset.section === current);
+    });
 }
 
 // ===================== URL HASH =====================
@@ -420,17 +451,17 @@ function restoreFromHash() {
 
 // ===================== RENDER ORCHESTRATOR =====================
 function renderAll() {
-    const main = document.getElementById('compare-main');
+    const layout = document.getElementById('compare-layout');
     const placeholder = document.getElementById('placeholder');
 
     if (selectedSchools.length < MIN_SCHOOLS) {
-        main.classList.add('hidden');
+        layout.classList.add('hidden');
         placeholder.classList.remove('hidden');
         destroyCharts();
         return;
     }
     placeholder.classList.add('hidden');
-    main.classList.remove('hidden');
+    layout.classList.remove('hidden');
 
     destroyCharts();
 

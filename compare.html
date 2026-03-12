@@ -57,71 +57,88 @@
         <p>Selecteer minimaal 2 scholen om te vergelijken.</p>
     </div>
 
-    <!-- Main content -->
-    <main id="compare-main" class="hidden">
+    <!-- Layout wrapper -->
+    <div id="compare-layout" class="hidden">
+        <!-- Sidebar navigation -->
+        <nav id="section-nav">
+            <a href="#cmp-examens" class="active" data-section="cmp-examens">Examens</a>
+            <a href="#cmp-leerlingen" data-section="cmp-leerlingen">Leerlingen</a>
+            <a href="#cmp-profielen" data-section="cmp-profielen">Profielen</a>
+            <a href="#cmp-gender" data-section="cmp-gender">Gender</a>
+            <a href="#cmp-tevredenheid" data-section="cmp-tevredenheid">Tevredenheid</a>
+            <a href="#cmp-doorstroom" data-section="cmp-doorstroom">Doorstroom</a>
+            <a href="#cmp-context" data-section="cmp-context">Context</a>
+            <a href="#cmp-personeel" data-section="cmp-personeel">Personeel</a>
+            <a href="#cmp-benchmark" data-section="cmp-benchmark">Eerlijke Benchmark</a>
+            <a href="#cmp-inspectie" data-section="cmp-inspectie">Inspectie</a>
+        </nav>
 
-        <!-- Section 1: Examens -->
-        <section id="cmp-examens" class="dashboard-section">
-            <h2>Examens &amp; Resultaten</h2>
-            <div class="compare-chart-grid" id="grid-examens"></div>
-        </section>
+        <!-- Main content -->
+        <main id="compare-main">
 
-        <!-- Section 2: Leerlingen -->
-        <section id="cmp-leerlingen" class="dashboard-section">
-            <h2>Leerlingpopulatie</h2>
-            <div class="compare-chart-grid" id="grid-leerlingen"></div>
-        </section>
+            <!-- Section 1: Examens -->
+            <section id="cmp-examens" class="dashboard-section">
+                <h2>Examens &amp; Resultaten</h2>
+                <div class="compare-chart-grid" id="grid-examens"></div>
+            </section>
 
-        <!-- Section 2b: Gender -->
-        <section id="cmp-gender" class="dashboard-section">
-            <h2>Gender</h2>
-            <div class="compare-chart-grid" id="grid-gender"></div>
-        </section>
+            <!-- Section 2: Leerlingen -->
+            <section id="cmp-leerlingen" class="dashboard-section">
+                <h2>Leerlingpopulatie</h2>
+                <div class="compare-chart-grid" id="grid-leerlingen"></div>
+            </section>
 
-        <!-- Section 2c: Profielen -->
-        <section id="cmp-profielen" class="dashboard-section">
-            <h2>Profielen</h2>
-            <div class="compare-chart-grid" id="grid-profielen"></div>
-        </section>
+            <!-- Section 3: Profielen -->
+            <section id="cmp-profielen" class="dashboard-section">
+                <h2>Profielen</h2>
+                <div class="compare-chart-grid" id="grid-profielen"></div>
+            </section>
 
-        <!-- Section 3: Tevredenheid -->
-        <section id="cmp-tevredenheid" class="dashboard-section">
-            <h2>Tevredenheid</h2>
-            <div class="compare-chart-grid" id="grid-tevredenheid"></div>
-        </section>
+            <!-- Section 4: Gender -->
+            <section id="cmp-gender" class="dashboard-section">
+                <h2>Gender</h2>
+                <div class="compare-chart-grid" id="grid-gender"></div>
+            </section>
 
-        <!-- Section 4: Doorstroom -->
-        <section id="cmp-doorstroom" class="dashboard-section">
-            <h2>Doorstroom na diploma</h2>
-            <div class="compare-chart-grid" id="grid-doorstroom"></div>
-        </section>
+            <!-- Section 5: Tevredenheid -->
+            <section id="cmp-tevredenheid" class="dashboard-section">
+                <h2>Tevredenheid</h2>
+                <div class="compare-chart-grid" id="grid-tevredenheid"></div>
+            </section>
 
-        <!-- Section 5: Context -->
-        <section id="cmp-context" class="dashboard-section">
-            <h2>Context &amp; Omgeving</h2>
-            <div class="compare-chart-grid" id="grid-context"></div>
-        </section>
+            <!-- Section 6: Doorstroom -->
+            <section id="cmp-doorstroom" class="dashboard-section">
+                <h2>Doorstroom na diploma</h2>
+                <div class="compare-chart-grid" id="grid-doorstroom"></div>
+            </section>
 
-        <!-- Section 6: Personeel -->
-        <section id="cmp-personeel" class="dashboard-section">
-            <h2>Personeel</h2>
-            <div class="compare-chart-grid" id="grid-personeel"></div>
-        </section>
+            <!-- Section 7: Context -->
+            <section id="cmp-context" class="dashboard-section">
+                <h2>Context &amp; Omgeving</h2>
+                <div class="compare-chart-grid" id="grid-context"></div>
+            </section>
 
-        <!-- Section 7: Benchmark (VA) -->
-        <section id="cmp-benchmark" class="dashboard-section">
-            <h2>Eerlijke Benchmark</h2>
-            <div class="chart-card va-explainer" id="va-compare-explainer"></div>
-            <div class="compare-chart-grid" id="grid-benchmark"></div>
-        </section>
+            <!-- Section 8: Personeel -->
+            <section id="cmp-personeel" class="dashboard-section">
+                <h2>Personeel</h2>
+                <div class="compare-chart-grid" id="grid-personeel"></div>
+            </section>
 
-        <!-- Section 8: Inspectie -->
-        <section id="cmp-inspectie" class="dashboard-section">
-            <h2>Inspectie <span class="inspectie-year-label" id="inspectie-year-label"></span></h2>
-            <div id="inspectie-compare-table"></div>
-        </section>
+            <!-- Section 9: Benchmark (VA) -->
+            <section id="cmp-benchmark" class="dashboard-section">
+                <h2>Eerlijke Benchmark</h2>
+                <div class="chart-card va-explainer" id="va-compare-explainer"></div>
+                <div class="compare-chart-grid" id="grid-benchmark"></div>
+            </section>
 
-    </main>
+            <!-- Section 10: Inspectie -->
+            <section id="cmp-inspectie" class="dashboard-section">
+                <h2>Inspectie <span class="inspectie-year-label" id="inspectie-year-label"></span></h2>
+                <div id="inspectie-compare-table"></div>
+            </section>
+
+        </main>
+    </div>
 
     <footer>
         <p>SHZG Dashboard &mdash; Vergelijking</p>
