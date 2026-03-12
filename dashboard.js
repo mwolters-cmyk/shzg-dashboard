@@ -1046,35 +1046,42 @@ function renderProfielen() {
         noData('chart-profiel-ce', 'Geen CE-data per profiel beschikbaar');
     }
 
-    // --- Chart 3: Line — slaagpercentage per profiel over jaren ---
+    // --- Chart 3: Line — slaagpercentage Natuur vs Maatschappij over jaren ---
     const sgSchool = (data.slaag_gender || []).filter(r => r.tSchool === selectedSchool);
+    const NATUUR_SHORT = ['N&T', 'N&G', 'N&T/N&G', 'N&T/E&M', 'N&T/C&M', 'N&G/E&M', 'N&G/C&M'];
+    const MAATSCHAPPIJ_SHORT = ['E&M', 'C&M', 'E&M/C&M'];
 
-    const profTimeSeries = {};
+    // Aggregate into Natuur vs Maatschappij per year
+    const groupTS = { Natuur: {}, Maatschappij: {} };
     sgSchool.forEach(r => {
-        const prof = r.Profiel;
-        if (!PROFIEL_DISPLAY_ORDER.includes(prof)) return;
         const year = r.Schooljaar;
         if (!SCHOOL_YEARS.includes(year)) return;
-        if (!profTimeSeries[prof]) profTimeSeries[prof] = {};
-        if (!profTimeSeries[prof][year]) profTimeSeries[prof][year] = { kand: 0, gesl: 0 };
-        profTimeSeries[prof][year].kand += parseInt(r.Examenkandidaten) || 0;
-        profTimeSeries[prof][year].gesl += parseInt(r.Geslaagden) || 0;
+        let group = null;
+        if (NATUUR_SHORT.includes(r.Profiel)) group = 'Natuur';
+        else if (MAATSCHAPPIJ_SHORT.includes(r.Profiel)) group = 'Maatschappij';
+        if (!group) return;
+        if (!groupTS[group][year]) groupTS[group][year] = { kand: 0, gesl: 0 };
+        groupTS[group][year].kand += parseInt(r.Examenkandidaten) || 0;
+        groupTS[group][year].gesl += parseInt(r.Geslaagden) || 0;
     });
 
     const ctxTrend = document.getElementById('chart-profiel-slaag-trend');
     const trendDatasets = [];
-    PROFIEL_DISPLAY_ORDER.forEach(prof => {
-        const ts = profTimeSeries[prof];
-        if (!ts) return;
+    const groupConfig = [
+        { key: 'Natuur', label: 'Natuur (N&T, N&G)', color: '#2980b9' },
+        { key: 'Maatschappij', label: 'Maatschappij (E&M, C&M)', color: '#e67e22' },
+    ];
+    groupConfig.forEach(({ key, label, color }) => {
+        const ts = groupTS[key];
         const yearVals = SCHOOL_YEARS.map(y => {
             if (ts[y] && ts[y].kand > 0) return ts[y].gesl / ts[y].kand * 100;
             return null;
         });
         if (yearVals.filter(v => v !== null).length < 1) return;
         trendDatasets.push({
-            label: prof,
+            label: label,
             data: yearVals,
-            borderColor: PROFIEL_COLORS[prof] || COLORS.grey,
+            borderColor: color,
             backgroundColor: 'transparent',
             borderWidth: 2.5,
             pointRadius: 4,
