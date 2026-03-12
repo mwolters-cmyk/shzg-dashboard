@@ -804,23 +804,30 @@ async function toggleMarktaandeel() {
                 const info = ma[pc4];
                 if (info) {
                     const pctOverig = (100 - info.pct_shzg).toFixed(1);
-                    let tip = `<b>PC4 ${pc4}</b><br>` +
+
+                    // Light hover tooltip — just PC4 + percentage
+                    layer.bindTooltip(
+                        `<b>${pc4}</b> — SHZG ${info.pct_shzg}%`,
+                        { sticky: true, className: 'map-label' }
+                    );
+
+                    // Click popup — full school breakdown
+                    let popup = `<div class="marktaandeel-popup"><b>PC4 ${pc4}</b><br>` +
                         `<span style="color:#1a5276;font-weight:600">SHZG: ${info.shzg} lln (${info.pct_shzg}%)</span><br>` +
                         `<span style="color:#a93226">Overig: ${info.overig} lln (${pctOverig}%)</span>`;
-
-                    // Top schools breakdown
                     if (info.top && info.top.length > 0) {
-                        tip += `<hr style="margin:4px 0;border:none;border-top:1px solid #ddd">`;
+                        popup += `<hr style="margin:4px 0;border:none;border-top:1px solid #ddd">`;
                         info.top.forEach(s => {
                             const name = s[0], count = s[1], group = s[2];
                             const color = group === 'S' ? '#1a5276' : '#999';
                             const dot = group === 'S' ? '●' : '○';
-                            tip += `<span style="font-size:11px;color:${color}">${dot}</span> ` +
+                            popup += `<span style="font-size:11px;color:${color}">${dot}</span> ` +
                                 `<span style="font-size:11px">${name}: <b>${count}</b></span><br>`;
                         });
                     }
+                    popup += `</div>`;
+                    layer.bindPopup(popup, { maxWidth: 320, className: 'breakdown-popup' });
 
-                    layer.bindTooltip(tip, { sticky: true, className: 'map-label marktaandeel-tip' });
                     layer.on({
                         mouseover: (e) => {
                             e.target.setStyle({ weight: 2.5, color: '#333', opacity: 0.8 });

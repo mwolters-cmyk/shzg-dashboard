@@ -787,12 +787,10 @@ footer {
     white-space: nowrap;
 }
 
-.map-label.marktaandeel-tip {
-    white-space: normal;
-    max-width: 320px;
-    font-weight: 400;
-    padding: 6px 10px;
-    line-height: 1.45;
+.marktaandeel-popup .leaflet-popup-content {
+    font-size: 12px;
+    line-height: 1.5;
+    margin: 10px 14px;
 }
 
 .map-label-selected {
