@@ -787,6 +787,14 @@ footer {
     white-space: nowrap;
 }
 
+.map-label.marktaandeel-tip {
+    white-space: normal;
+    max-width: 320px;
+    font-weight: 400;
+    padding: 6px 10px;
+    line-height: 1.45;
+}
+
 .map-label-selected {
     font-size: 12px;
     font-weight: 700;
@@ -840,7 +848,9 @@ footer {
 }
 
 .map-legend-bar.marktaandeel-bar {
-    background: linear-gradient(to right, #1a5276, #7fb3d8, #f0f0f0, #e8a0a0, #c0392b);
+    /* Asymmetric: midpoint at ~10% SHZG (90% of bar = red side, 10% blue) */
+    /* Left = 100% SHZG (blue), 90% mark = midpoint (white), Right = 0% SHZG (red) */
+    background: linear-gradient(to right, #1a5276 0%, #4a8ab5 5%, #eff3f8 10%, #e0a0a0 55%, #c0392b 100%);
     max-width: 280px;
 }
 

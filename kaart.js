@@ -720,22 +720,34 @@ async function loadMarktaandeel() {
 }
 
 function getMarktaandeelColor(pctShzg) {
-    // Blue (#1a5276) at 100% SHZG → white (#f0f0f0) at 50% → Red (#c0392b) at 0% SHZG
-    let r, g, b;
-    if (pctShzg >= 50) {
-        // Blue to white: 50-100% SHZG
-        const t = (pctShzg - 50) / 50; // 0=50%, 1=100%
-        r = Math.round(240 - t * (240 - 26));
-        g = Math.round(240 - t * (240 - 82));
-        b = Math.round(240 - t * (240 - 118));
+    // Asymmetric scale — midpoint at ~10% SHZG (close to national median for areas with any SHZG)
+    // Below 10%: red shades (most of NL)
+    // Above 10%: blue shades (SHZG strongholds)
+    // Uses sqrt scaling on the blue side to differentiate 10-30% well
+    const MID = 10;
+    let r, g, b, opacity;
+
+    if (pctShzg >= MID) {
+        // Blue side: 10% → 100% SHZG
+        // Use sqrt to stretch contrast in 10-30% range
+        const raw = (pctShzg - MID) / (100 - MID); // 0..1
+        const t = Math.sqrt(raw);
+        // White (#eff3f8) → Blue (#1a5276)
+        r = Math.round(239 - t * (239 - 26));
+        g = Math.round(243 - t * (243 - 82));
+        b = Math.round(248 - t * (248 - 118));
+        opacity = 0.3 + 0.55 * t;
     } else {
-        // White to red: 0-50% SHZG
-        const t = pctShzg / 50; // 0=0%, 1=50%
-        r = Math.round(192 + t * (240 - 192));
-        g = Math.round(57 + t * (240 - 57));
-        b = Math.round(43 + t * (240 - 43));
+        // Red side: 0% → 10% SHZG
+        // Linear within this narrow range for maximum contrast
+        const t = pctShzg / MID; // 0=0%, 1=10%
+        // Red (#c0392b) → White (#eff3f8)
+        r = Math.round(192 + t * (239 - 192));
+        g = Math.round(57 + t * (243 - 57));
+        b = Math.round(43 + t * (248 - 43));
+        opacity = 0.3 + 0.5 * (1 - t);
     }
-    const opacity = 0.25 + 0.45 * Math.abs(pctShzg - 50) / 50;
+
     return { fillColor: `rgb(${r},${g},${b})`, fillOpacity: opacity };
 }
 
@@ -792,10 +804,23 @@ async function toggleMarktaandeel() {
                 const info = ma[pc4];
                 if (info) {
                     const pctOverig = (100 - info.pct_shzg).toFixed(1);
-                    layer.bindTooltip(
-                        `<b>PC4 ${pc4}</b><br>SHZG: ${info.shzg} lln (${info.pct_shzg}%)<br>Overig: ${info.overig} lln (${pctOverig}%)<br>Totaal: ${info.total}`,
-                        { sticky: true, className: 'map-label' }
-                    );
+                    let tip = `<b>PC4 ${pc4}</b><br>` +
+                        `<span style="color:#1a5276;font-weight:600">SHZG: ${info.shzg} lln (${info.pct_shzg}%)</span><br>` +
+                        `<span style="color:#a93226">Overig: ${info.overig} lln (${pctOverig}%)</span>`;
+
+                    // Top schools breakdown
+                    if (info.top && info.top.length > 0) {
+                        tip += `<hr style="margin:4px 0;border:none;border-top:1px solid #ddd">`;
+                        info.top.forEach(s => {
+                            const name = s[0], count = s[1], group = s[2];
+                            const color = group === 'S' ? '#1a5276' : '#999';
+                            const dot = group === 'S' ? '●' : '○';
+                            tip += `<span style="font-size:11px;color:${color}">${dot}</span> ` +
+                                `<span style="font-size:11px">${name}: <b>${count}</b></span><br>`;
+                        });
+                    }
+
+                    layer.bindTooltip(tip, { sticky: true, className: 'map-label marktaandeel-tip' });
                     layer.on({
                         mouseover: (e) => {
                             e.target.setStyle({ weight: 2.5, color: '#333', opacity: 0.8 });
